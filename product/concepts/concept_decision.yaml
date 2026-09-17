@@ -1,0 +1,23 @@
+version: 1
+status: undecided
+selected_concept: null
+candidate_concepts:
+  - analytics_explorer
+  - data_analysis_learning_game
+  - hybrid
+decision_boundary: B0
+decision_requires:
+  - target_user_hypothesis_compared
+  - raw_data_inventory_completed
+  - data_feasibility_assessed
+  - core_loop_options_compared
+  - first_vertical_slice_options_compared
+  - scope_cost_and_rights_risks_documented
+  - explicit_human_approval_recorded
+prohibited_before_decision:
+  - production_ui_implementation
+  - full_curriculum_authoring
+  - pixel_battle_system_implementation
+  - default_score_formula_freeze
+  - large_scale_corpus_processing
+

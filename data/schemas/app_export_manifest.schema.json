@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/app_export_manifest.schema.json",
+  "title": "Approved Application Export Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "export_id",
+    "created_at",
+    "schema_version",
+    "source_dataset_versions",
+    "pipeline_version",
+    "files",
+    "rights_review_status",
+    "approval_ref"
+  ],
+  "properties": {
+    "export_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "schema_version": {"type": "string"},
+    "source_dataset_versions": {"type": "array", "items": {"type": "string"}},
+    "pipeline_version": {"type": "string"},
+    "entity_resolution_version": {"type": "string"},
+    "score_model_versions": {"type": "array", "items": {"type": "string"}},
+    "source_layers": {
+      "type": "array",
+      "items": {"enum": ["HISTORY_BASE", "HISTORY_ANNOTATION", "ROMANCE", "LATER_INTERPRETATION", "GAME_DATA"]}
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["relative_path", "sha256", "record_type", "record_count"],
+        "properties": {
+          "relative_path": {"type": "string"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "record_type": {"type": "string"},
+          "record_count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "rights_review_status": {"enum": ["approved", "approved_with_limits"]},
+    "approval_ref": {"type": "string", "minLength": 1}
+  }
+}
+

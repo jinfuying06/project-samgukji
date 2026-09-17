@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/dataset.schema.json",
+  "title": "Analysis Dataset Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id"],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable pseudonymous identifier"
+    }
+  }
+}
+

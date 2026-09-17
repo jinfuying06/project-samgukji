@@ -1,0 +1,51 @@
+version: 1
+mode: human_confirmed_stage_gated
+
+scope:
+  stage_parallelism: allowed
+  cross_stage_parallelism: forbidden
+  speculative_future_stage_work: forbidden
+
+approval:
+  explicit_values: [approved, proceed, yes, 진행, 승인]
+  silence_is_approval: false
+  ambiguous_answer: ask_again
+  record_file: handoffs/APPROVALS.md
+  required_fields:
+    - boundary_id
+    - approved_scope
+    - approver
+    - timestamp
+    - conditions
+
+completion_report:
+  template: handoffs/PHASE_COMPLETION_TEMPLATE.md
+  required_sections:
+    - planned_scope
+    - completed_outputs
+    - validation_results
+    - decisions_made
+    - problems_and_open_questions
+    - residual_risks
+    - proposed_next_stage_scope
+    - approval_question
+
+issue_handling:
+  minor_reversible:
+    action: decide_and_log
+    log: handoffs/DECISIONS.md
+  material_or_irreversible:
+    action: stop_affected_work_document_and_ask_human
+    log: handoffs/OPEN_QUESTIONS.md
+  permission_or_data_rights:
+    action: stop_and_ask_human
+  failed_gate:
+    action: return_to_named_owner_with_evidence
+
+data_rules:
+  raw_is_immutable: true
+  private_data_committed: false
+  runtime_database_committed: false
+  app_ingests_only_approved_curated_exports: true
+  fixtures_must_be_synthetic_or_rights_cleared: true
+

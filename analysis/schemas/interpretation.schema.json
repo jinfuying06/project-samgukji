@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/interpretation.schema.json",
+  "title": "Grounded LLM Interpretation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "status", "claims"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "status": {"enum": ["complete", "partial", "insufficient_evidence", "refused"]},
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "type", "text", "evidence_refs", "limitations", "risk_level"],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "type": {"enum": ["observation", "interpretation", "recommendation"]},
+          "text": {"type": "string"},
+          "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "limitations": {"type": "array", "items": {"type": "string"}},
+          "risk_level": {"enum": ["low", "medium", "high"]}
+        }
+      }
+    },
+    "global_warning": {"type": ["string", "null"]}
+  }
+}
+

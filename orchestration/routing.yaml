@@ -1,0 +1,49 @@
+version: 1
+
+stage_policy:
+  current_stage_source: handoffs/PROJECT_STATE.md
+  approval_source: handoffs/APPROVALS.md
+  allow_parallel_tracks_inside_stage: true
+  allow_cross_stage_work: false
+  allow_future_stage_preparation_while_waiting: false
+  require_explicit_boundary_approval: true
+
+default_engine_preferences:
+  orchestrator: either
+  researcher: claude_code
+  data_engineer: codex
+  statistician: codex_with_cross_review
+  llm_analyst: either
+  product_manager: claude_code
+  ux_designer: claude_code
+  architect: codex
+  backend: codex
+  frontend: codex
+  qa: codex
+  evaluator: different_from_artifact_author
+
+retry_policy:
+  maximum_same_agent_retries: 2
+  after_limit: escalate_to_orchestrator
+  require_new_evidence_on_retry: true
+
+conflict_policy:
+  simultaneous_same_file_edits: forbidden
+  product_vs_implementation: approved_product_artifact_wins
+  private_analysis_vs_app_database: app_uses_only_approved_curated_export
+  evidence_vs_product_request: evidence_and_safety_win
+  evaluator_vs_owner:
+    evaluator: identifies_failure_and_evidence
+    orchestrator: assigns_rework
+    human: resolves_material_scope_or_risk_tradeoff
+
+handoff_required_fields:
+  - role
+  - task_id
+  - summary
+  - changed_paths
+  - validation_run
+  - validation_not_run
+  - risks
+  - blockers
+  - next_recommended_role

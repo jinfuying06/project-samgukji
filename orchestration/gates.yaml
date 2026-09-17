@@ -1,0 +1,126 @@
+version: 2
+
+gates:
+  concept_data_feasibility_gate:
+    boundary: B0
+    human_approval_required: true
+    hard_blockers:
+      - product_concept_silently_preselected
+      - raw_source_modified_or_moved
+      - private_data_or_database_committed
+      - source_layers_merged
+      - material_data_rights_question_hidden
+      - full_corpus_processing_started_without_approval
+    required_artifacts:
+      - product/concepts/concept_options.md
+      - product/concepts/concept_decision.yaml
+      - data/ingestion_report.md
+      - data/normalization_plan.md
+      - research/protocol.md
+      - handoffs/phase_reports/S0_COMPLETION.md
+    required_checks:
+      raw_inventory_read_only: true
+      product_options_compared: true
+      private_data_boundary_check_pass: true
+      material_questions_reported: true
+      S1_scope_proposed: true
+
+  research_product_alignment_gate:
+    boundary: B1
+    minimum_score: 85
+    human_approval_required: true
+    hard_blockers:
+      - unverified_or_fabricated_citation
+      - missing_data_usage_rights_for_selected_sample
+      - undocumented_primary_outcome_change
+      - schema_validation_failed
+      - analysis_not_reproducible
+      - private_data_or_database_committed
+      - history_and_romance_source_layers_mixed
+      - entity_alias_collision
+      - missing_value_scored_as_zero
+      - unvalidated_llm_autocoding_used_as_ground_truth
+      - product_promises_unsupported_analysis
+    required_artifacts:
+      - research/protocol.md
+      - research/source_policy.md
+      - research/coding_manual.md
+      - research/evidence_matrix.csv
+      - research/analysis_criteria.md
+      - data/schemas/dataset.schema.json
+      - data/quality_report.json
+      - analysis/analysis_plan.md
+      - analysis/scoring_model.md
+      - analysis/network_analysis_plan.md
+      - analysis/outputs/result.json
+      - analysis/outputs/run_manifest.json
+      - product/feature_spec.md
+      - product/user_journeys.md
+      - product/data_to_ui_mapping.md
+      - handoffs/phase_reports/S1_COMPLETION.md
+    recommended_targets:
+      citation_metadata_valid_rate: 1.0
+      schema_validation_pass: true
+      reproducible_run_pass: true
+      source_layer_leakage_cases: 0
+      orphan_evidence_refs: 0
+      unresolved_entity_collisions: 0
+      double_coded_calibration_set: true
+
+  design_development_readiness_gate:
+    boundary: B2
+    minimum_score: 80
+    human_development_approval_required: true
+    hard_blockers:
+      - primary_flow_missing
+      - analysis_output_has_no_ui_mapping
+      - high_risk_result_lacks_uncertainty
+      - inaccessible_critical_action
+      - default_and_custom_scores_visually_confused
+      - gamification_rewards_source_misconception
+      - design_standard_still_placeholder
+      - app_reads_private_raw_or_analysis_zone
+      - curated_export_contract_missing
+    required_artifacts:
+      - design/DESIGN.md
+      - product/feature_spec.md
+      - product/user_journeys.md
+      - product/screen_inventory.md
+      - product/data_to_ui_mapping.md
+      - product/acceptance_criteria.md
+      - design/wireframe_brief.md
+      - design/component_spec.md
+      - design/accessibility_checklist.md
+      - data/APP_DATABASE_POLICY.md
+      - handoffs/phase_reports/S2_COMPLETION.md
+
+  implementation_gate:
+    boundary: B3
+    minimum_score: 85
+    human_approval_required: true
+    hard_blockers:
+      - critical_or_high_security_issue
+      - contract_test_failure
+      - critical_user_flow_failure
+      - data_or_model_regression_above_threshold
+      - missing_rollback_plan
+      - unresolved_high_risk_claim
+      - source_layer_regression
+      - score_not_traceable_to_evidence
+      - unauthorized_translation_or_game_asset
+      - private_data_or_database_committed
+    required_artifacts:
+      - app/architecture/system.md
+      - app/architecture/api_contract.yaml
+      - app/architecture/threat_model.md
+      - tests/TEST_REPORT.md
+      - evals/eval_results.json
+      - handoffs/phase_reports/S3_COMPLETION.md
+    required_checks:
+      unit_tests_pass: true
+      integration_tests_pass: true
+      contract_tests_pass: true
+      accessibility_critical_issues: 0
+      open_critical_bugs: 0
+      data_boundary_check_pass: true
+

@@ -1,0 +1,98 @@
+version: 1
+scale: 100
+rules:
+  - id: evidence_quality
+    weight: 12
+    owner: evaluator
+    inputs: [research/papers.csv, research/evidence_matrix.csv]
+    automatic: false
+    rubric: "출처 검증, 직접성, 포함/제외 일관성, 상충 근거 처리"
+
+  - id: source_layer_and_entity_integrity
+    weight: 10
+    owner: evaluator
+    inputs: [research/source_policy.md, data/quality_report.json]
+    automatic: mixed
+    rubric: "정사/주석/연의/게임 분리, alias 충돌, evidence 계보"
+
+  - id: coding_reliability
+    weight: 10
+    owner: evaluator
+    inputs: [research/coding_manual.md, data/quality_report.json]
+    automatic: mixed
+    rubric: "코드북, 이중코딩, 합치도, adjudication, LLM 오류 유형"
+
+  - id: data_reproducibility
+    weight: 10
+    owner: evaluator
+    inputs: [data/quality_report.json, analysis/outputs/run_manifest.json]
+    automatic: true
+    rubric: "스키마, 계보, 환경, seed, 재실행 결과"
+
+  - id: statistical_validity
+    weight: 10
+    owner: evaluator
+    inputs: [analysis/analysis_plan.md, analysis/outputs/result.json]
+    automatic: false
+    rubric: "가정, 검정/모델 선택, 효과크기, 불확실성, 다중비교"
+
+  - id: score_traceability
+    weight: 10
+    owner: evaluator
+    inputs: [analysis/scoring_model.md, analysis/outputs/result.json]
+    automatic: mixed
+    rubric: "점수→하위지표→코드→근거, 결측, coverage, 가중치 민감도"
+
+  - id: llm_grounding
+    weight: 10
+    owner: evaluator
+    inputs: [analysis/outputs/result.json, analysis/outputs/interpretation.json]
+    automatic: mixed
+    rubric: "claim-evidence 연결, 수치 일치, 제한사항, unsupported claim 0"
+
+  - id: product_consistency
+    weight: 8
+    owner: evaluator
+    inputs: [product/data_to_ui_mapping.md, product/acceptance_criteria.md]
+    automatic: false
+    rubric: "문제-기능-화면-결과 계약의 추적 가능성"
+
+  - id: experience_integrity
+    weight: 5
+    owner: evaluator
+    inputs: [product/concepts/concept_decision.yaml, product/feature_spec.md, product/gamification_spec.md, tests/TEST_REPORT.md]
+    automatic: false
+    rubric: "선택된 제품 개념과 핵심 루프의 일치; 게임화 시 근거 탐색 보상·왜곡/과신 방지"
+
+  - id: usability_accessibility
+    weight: 7
+    owner: evaluator
+    inputs: [design/accessibility_checklist.md, tests/TEST_REPORT.md]
+    automatic: mixed
+    rubric: "핵심 흐름, 오류 복구, 키보드, 의미 구조, 대비"
+
+  - id: engineering_quality
+    weight: 5
+    owner: evaluator
+    inputs: [tests/TEST_REPORT.md]
+    automatic: true
+    rubric: "테스트 통과, 계약 검증, 보안 스캔, 관측성"
+
+  - id: operational_readiness
+    weight: 3
+    owner: evaluator
+    inputs: [app/architecture/system.md, tests/TEST_REPORT.md]
+    automatic: false
+    rubric: "배포, rollback, 데이터 장애, 비용/지연, 책임자"
+
+decision:
+  pass:
+    minimum_total: 85
+    maximum_hard_blockers: 0
+  conditional_pass:
+    minimum_total: 80
+    maximum_hard_blockers: 0
+    requires_human_approval: true
+  fail:
+    below_total: 80
+  note: "총점이 높아도 hard blocker가 하나면 실패"

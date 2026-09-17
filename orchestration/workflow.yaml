@@ -1,0 +1,208 @@
+version: 2
+execution_policy_file: orchestration/execution_policy.yaml
+project_state_file: handoffs/PROJECT_STATE.md
+current_task_file: handoffs/CURRENT_TASK.md
+handoff_file: handoffs/LAST_HANDOFF.md
+approval_log_file: handoffs/APPROVALS.md
+
+principles:
+  - artifacts_are_shared_memory
+  - work_only_inside_currently_approved_stage
+  - parallelize_independent_tracks_inside_a_stage
+  - code_computes_llm_explains
+  - private_data_never_committed
+  - independent_evaluation
+  - document_report_ask_approve_before_stage_transition
+
+stages:
+  - id: S0
+    name: discovery_and_feasibility
+    purpose: "제품 방향과 데이터 실현 가능성을 확정하지 않고 병렬 탐색"
+    human_approval_required_to_start: false
+    parallel_tracks:
+      - id: C0
+        name: product_concept_discovery
+        owner: product_manager
+        outputs:
+          - product/concepts/concept_options.md
+          - product/concepts/concept_decision.yaml
+          - product/problem_definition.md
+          - product/target_user.md
+      - id: D0
+        name: private_raw_data_inventory
+        owner: data_engineer
+        read_only_private_data: true
+        outputs:
+          - data/manifests/raw_file_inventory.template.csv
+          - data/manifests/source_registry.template.csv
+          - data/ingestion_report.md
+          - data/normalization_plan.md
+      - id: R0
+        name: research_method_feasibility
+        owner: researcher
+        outputs:
+          - research/protocol.md
+          - research/source_policy.md
+          - research/candidate_reading_list.csv
+    boundary:
+      id: B0
+      name: concept_and_data_feasibility_review
+      owner: orchestrator
+      evaluator: evaluator
+      required_outputs:
+        - product/concepts/concept_options.md
+        - product/concepts/concept_decision.yaml
+        - data/ingestion_report.md
+        - data/normalization_plan.md
+        - handoffs/phase_reports/S0_COMPLETION.md
+      transition: await_explicit_human_approval
+      approval_question: "제품 방향과 데이터 처리 계획을 확정하고 S1 상세 기획·샘플 분석 단계로 진행할까요?"
+
+  - id: S1
+    name: parallel_product_and_analysis_definition
+    depends_on_approved_boundary: B0
+    purpose: "확정된 개념 아래 제품 기획과 샘플 데이터 분석을 병렬 수행"
+    parallel_tracks:
+      - id: R1
+        name: evidence_and_coding_definition
+        owner: researcher
+        outputs:
+          - research/coding_manual.md
+          - research/evidence_matrix.csv
+          - research/analysis_criteria.md
+      - id: D1
+        name: approved_sample_ingestion
+        owner: data_engineer
+        private_data_writes_only: true
+        outputs:
+          - data/data_dictionary.csv
+          - data/quality_report.json
+          - data/schemas/dataset.schema.json
+          - data/schemas/person.schema.json
+          - data/schemas/evidence.schema.json
+          - data/schemas/event.schema.json
+          - data/schemas/relationship.schema.json
+      - id: A1
+        name: sample_analysis
+        owner: statistician
+        depends_on: [R1, D1]
+        outputs:
+          - analysis/analysis_plan.md
+          - analysis/scoring_model.md
+          - analysis/network_analysis_plan.md
+          - analysis/outputs/result.json
+          - analysis/outputs/run_manifest.json
+      - id: P1
+        name: product_planning
+        owner: product_manager
+        outputs:
+          - product/feature_spec.md
+          - product/user_journeys.md
+          - product/screen_inventory.md
+          - product/gamification_spec.md
+          - product/acceptance_criteria.md
+    boundary:
+      id: B1
+      name: research_product_alignment
+      owner: orchestrator
+      evaluator: evaluator
+      required_outputs:
+        - analysis/outputs/result.json
+        - product/feature_spec.md
+        - product/user_journeys.md
+        - product/data_to_ui_mapping.md
+        - handoffs/phase_reports/S1_COMPLETION.md
+      transition: await_explicit_human_approval
+      approval_question: "샘플 분석 결과와 제품 기획을 정렬한 이 범위로 UX/UI 설계를 시작할까요?"
+
+  - id: S2
+    name: ux_ui_and_contract_design
+    depends_on_approved_boundary: B1
+    tracks:
+      - id: U1
+        name: ux_ui_design
+        owner: ux_designer
+        outputs:
+          - design/DESIGN.md
+          - design/wireframe_brief.md
+          - design/component_spec.md
+          - design/accessibility_checklist.md
+      - id: L1
+        name: llm_interpretation_contract
+        owner: llm_analyst
+        outputs:
+          - analysis/llm_contract.md
+          - analysis/schemas/interpretation.schema.json
+    boundary:
+      id: B2
+      name: design_and_development_readiness
+      owner: orchestrator
+      evaluator: evaluator
+      required_outputs:
+        - design/DESIGN.md
+        - design/wireframe_brief.md
+        - design/component_spec.md
+        - product/data_to_ui_mapping.md
+        - handoffs/phase_reports/S2_COMPLETION.md
+      transition: await_explicit_human_development_approval
+      approval_question: "문서화된 요구사항과 디자인 범위로 아키텍처·애플리케이션 개발을 시작할까요?"
+
+  - id: S3
+    name: architecture_and_implementation
+    depends_on_approved_boundary: B2
+    tracks:
+      - id: E0
+        name: architecture
+        owner: architect
+        outputs:
+          - app/architecture/system.md
+          - app/architecture/api_contract.yaml
+          - app/architecture/threat_model.md
+      - id: E1
+        name: implementation
+        owners: [backend, frontend]
+        depends_on: [E0]
+        parallel: true
+        parallel_condition: contracts_frozen_and_write_paths_disjoint
+        required_inputs:
+          - design/DESIGN.md
+          - design/wireframe_brief.md
+          - design/component_spec.md
+          - product/data_to_ui_mapping.md
+          - app/architecture/api_contract.yaml
+          - data/APP_DATABASE_POLICY.md
+    boundary:
+      id: B3
+      name: implementation_review
+      owner: orchestrator
+      evaluator: evaluator
+      required_outputs:
+        - tests/TEST_REPORT.md
+        - evals/eval_results.json
+        - handoffs/phase_reports/S3_COMPLETION.md
+      transition: await_explicit_human_release_candidate_approval
+      approval_question: "검증 결과와 잔여 위험을 확인하고 릴리스 후보 단계로 진행할까요?"
+
+  - id: S4
+    name: release_decision
+    depends_on_approved_boundary: B3
+    owner: orchestrator
+    requires_human_approval: true
+
+transition_protocol:
+  - complete_current_stage_outputs
+  - run_validation_and_independent_evaluation
+  - write_phase_completion_report
+  - update_project_state_decisions_and_open_questions
+  - present_results_risks_and_next_stage_scope
+  - ask_boundary_approval_question
+  - wait_for_explicit_human_answer
+  - record_approval_in_approvals_log
+  - start_next_stage_only_if_approved
+
+prohibited_transitions:
+  - implicit_approval_from_silence
+  - automatic_cross_stage_progress
+  - work_on_future_stage_while_waiting
+  - implementation_before_B2_approval
+

@@ -1,0 +1,39 @@
+{
+  "target_id": "example-commit-or-run",
+  "gate": "research_gate",
+  "hard_blockers": [],
+  "automatic_checks": {
+    "schema_validation_pass": true,
+    "reproducible_run_pass": true,
+    "unsupported_llm_claims": 0,
+    "source_layer_leakage_cases": 0,
+    "orphan_evidence_refs": 0,
+    "unresolved_entity_collisions": 0,
+    "missing_value_scored_as_zero": false,
+    "authorized_assets_only": true,
+    "double_coded_calibration_set": true,
+    "unit_tests_pass": true,
+    "integration_tests_pass": true,
+    "contract_tests_pass": true,
+    "accessibility_critical_issues": 0,
+    "open_critical_bugs": 0
+  },
+  "category_scores": {
+    "evidence_quality": 90,
+    "source_layer_and_entity_integrity": 95,
+    "coding_reliability": 85,
+    "data_reproducibility": 90,
+    "statistical_validity": 85,
+    "score_traceability": 90,
+    "llm_grounding": 90,
+    "product_consistency": 85,
+    "experience_integrity": 85,
+    "usability_accessibility": 85,
+    "engineering_quality": 85,
+    "operational_readiness": 80
+  },
+  "evidence": [
+    "Replace example values with paths to real reports."
+  ],
+  "evaluator_notes": "Example only; not a real evaluation."
+}

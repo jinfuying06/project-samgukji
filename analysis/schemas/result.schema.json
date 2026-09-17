@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/result.schema.json",
+  "title": "Analysis Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["analysis_id", "run_id", "status", "population", "metrics", "limitations"],
+  "properties": {
+    "analysis_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["complete", "partial", "failed"]},
+    "population": {
+      "type": "object",
+      "required": ["n", "description"],
+      "properties": {
+        "n": {"type": "integer", "minimum": 0},
+        "description": {"type": "string"}
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["metric_id", "name", "value", "unit"],
+        "properties": {
+          "metric_id": {"type": "string"},
+          "name": {"type": "string"},
+          "value": {"type": ["number", "null"]},
+          "unit": {"type": "string"},
+          "interval_low": {"type": ["number", "null"]},
+          "interval_high": {"type": ["number", "null"]},
+          "method": {"type": "string"}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}}
+  }
+}
+

@@ -1,0 +1,10 @@
+{
+  "fixture_type": "synthetic",
+  "purpose": "schema wiring only; not a historical claim",
+  "person": {
+    "person_id": "PER-0000",
+    "preferred_name_ko": "합성 인물",
+    "aliases": []
+  }
+}
+

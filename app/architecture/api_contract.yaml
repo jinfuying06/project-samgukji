@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: TKAF API
+  version: 0.1.0-draft
+  description: Draft contract. Freeze only after Research and Design Gates.
+paths:
+  /v1/people/{person_id}:
+    get:
+      summary: Get canonical person and aliases
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        "200":
+          description: Person
+        "404":
+          description: Unknown person
+  /v1/events/{event_id}/compare:
+    get:
+      summary: Compare source-layer representations of an event
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        "200":
+          description: Source-aware comparison with evidence references
+  /v1/scores/{person_id}:
+    get:
+      summary: Get explainable versioned scores
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: {type: string}
+        - name: source_mode
+          in: query
+          required: true
+          schema:
+            enum: [history_base, history_annotation, romance, custom, external_game]
+      responses:
+        "200":
+          description: Score, coverage, confidence, and contributions
+        "422":
+          description: Insufficient evidence
+  /v1/ask:
+    post:
+      summary: Ask a source-constrained question
+      responses:
+        "200":
+          description: Grounded response with evidence refs
+        "422":
+          description: Insufficient evidence or unsafe request
+

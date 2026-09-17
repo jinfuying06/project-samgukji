@@ -1,0 +1,11 @@
+candidate_id,title_or_topic,author_or_hint,method_area,proposed_use,verification_status,notes
+C001,계량역사학적 방법을 이용한 리더십 연구,백기복,Historiometry,방법론 입문 및 변수 설계,unverified_from_notes,메타데이터와 원문 확인 필요
+C002,Quantifying Leader Lives: What Historiometric Approaches Can Tell Us,Dean Keith Simonton,Historiometry,역사 인물 정량화 철학,unverified_from_notes,정확한 서지 확인 필요
+C003,Historiometry in the 21st Century,Dean Keith Simonton,Historiometry,연구 설계와 타당도,unverified_from_notes,정확한 서지 확인 필요
+C004,Complicating the Social Networks for Better Storytelling: An Empirical Study of Chinese Historical Text and Novel,Chenhan Zhang,Social Network Analysis,역사서-소설 네트워크 비교,unverified_from_notes,원문과 분석 단위 확인 필요
+C005,한국어의 내용분석을 위한 KrKwic 프로그램의 이해와 적용,박한우,Content Analysis,텍스트 코딩/빈도 분석 참고,unverified_from_notes,현대적 적용 한계 검토
+C006,CIP Leadership Model,Mumford / Strange / Hunter,Leadership,리더십 유형 구성 참고,topic_only,관련 핵심 논문 선별 필요
+C007,Knowledge Graphs in the Libraries and Digital Humanities Domain,,Knowledge Graph,역사 지식그래프 구조,unverified_from_notes,정확한 저자/버전 확인 필요
+C008,Storytelling with Data,Cole Nussbaumer Knaflic,Information Visualization,시각적 설명 참고,unverified_from_notes,논문이 아닌 도서 후보
+C009,Game Balance / Character Rating / RPG Attribute System,various,Game Studies,능력치/밸런스 설계,topic_only,구체 연구 선별 필요
+

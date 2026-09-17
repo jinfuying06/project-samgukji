@@ -1,0 +1,13 @@
+{
+  "dataset_version": "TBD",
+  "generated_at": "TBD",
+  "input_sha256": "TBD",
+  "row_count": 0,
+  "schema_validation_pass": false,
+  "duplicate_key_count": 0,
+  "missing_rate_by_field": {},
+  "range_violations": {},
+  "excluded_rows": {},
+  "warnings": ["Replace this example with data/quality_report.json after a real run"]
+}
+

@@ -1,0 +1,3 @@
+field_name,type,nullable,unit,description,source_field,allowed_values,missing_meaning,sensitive,transform_rule
+record_id,string,false,,Stable pseudonymous identifier,,,not_applicable,false,
+

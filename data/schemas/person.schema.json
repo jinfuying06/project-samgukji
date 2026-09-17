@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/person.schema.json",
+  "title": "Three Kingdoms Person",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["person_id", "preferred_name_ko", "aliases"],
+  "properties": {
+    "person_id": {"type": "string", "pattern": "^PER-[0-9]{4,}$"},
+    "preferred_name_ko": {"type": "string"},
+    "name_hanzi": {"type": ["string", "null"]},
+    "courtesy_name": {"type": ["string", "null"]},
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["value", "language", "kind"],
+        "properties": {
+          "value": {"type": "string"},
+          "language": {"type": "string"},
+          "kind": {"enum": ["name", "courtesy_name", "title", "posthumous_name", "variant", "other"]}
+        }
+      }
+    },
+    "birth_year": {"type": ["integer", "null"]},
+    "death_year": {"type": ["integer", "null"]},
+    "disambiguation_note": {"type": ["string", "null"]}
+  }
+}
+
