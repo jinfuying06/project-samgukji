@@ -11,6 +11,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Third-party/build directories are never project content and must not be scanned:
+# node_modules ships JSONC (comments/trailing commas) tsconfig files that are not
+# strict JSON, and none of these directories are ever committed (see .gitignore).
+EXCLUDED_DIR_NAMES = {"node_modules", ".git", "dist", "build", "coverage", "__pycache__"}
+
+
+def _is_excluded(path: Path) -> bool:
+    return any(part in EXCLUDED_DIR_NAMES for part in path.parts)
+
 REQUIRED = [
     "README.md",
     "PROJECT_BRIEF.md",
@@ -60,6 +69,8 @@ def main() -> int:
             errors.append(f"missing required file: {relative}")
 
     for path in sorted(ROOT.rglob("*.json")):
+        if _is_excluded(path.relative_to(ROOT)):
+            continue
         try:
             json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:

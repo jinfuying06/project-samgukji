@@ -46,6 +46,8 @@ research/papers/fulltext/*
 !research/papers/fulltext/.gitkeep
 analysis/outputs/*
 !analysis/outputs/.gitkeep
+!analysis/outputs/result.json
+!analysis/outputs/run_manifest.json
 evals/eval_input.json
 evals/eval_results.json
 *.sqlite3

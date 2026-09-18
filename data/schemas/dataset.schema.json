@@ -1,16 +1,58 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.local/schemas/dataset.schema.json",
-  "title": "Analysis Dataset Record",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tkaf.local/schemas/dataset.schema.json",
+  "title": "Dataset run manifest",
+  "description": "Top-level manifest describing one reproducible sample-build run. Matches the shape written by data/pipelines/build_chibi_sample.py to ${TKAF_PRIVATE_DATA_ROOT}/analysis/tables/run_manifest.json.",
   "type": "object",
-  "additionalProperties": false,
-  "required": ["record_id"],
+  "required": [
+    "pipeline_version", "generated_at", "sample_scope", "input_file_hashes",
+    "row_counts_by_layer", "duplicate_text_hash_rows_by_layer"
+  ],
   "properties": {
-    "record_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Stable pseudonymous identifier"
+    "pipeline_version": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "sample_scope": {
+      "type": "object",
+      "required": ["event", "history_juan", "romance_hui"],
+      "properties": {
+        "event": { "type": "string" },
+        "history_juan": { "type": "array", "items": { "type": "integer" } },
+        "romance_hui": { "type": "array", "items": { "type": "integer" } },
+        "romance_hui_narrowed_from": { "type": ["array", "null"], "items": { "type": "integer" } },
+        "narrowing_reason": { "type": ["string", "null"] }
+      }
+    },
+    "input_file_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "relative_raw_path -> sha256, for reproducibility. Never store absolute private paths here."
+    },
+    "files_missing": { "type": "array", "items": { "type": "string" } },
+    "row_counts_by_layer": {
+      "type": "object",
+      "properties": {
+        "HISTORY_BASE": { "type": "integer", "minimum": 0 },
+        "HISTORY_ANNOTATION": { "type": "integer", "minimum": 0 },
+        "ROMANCE": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "duplicate_text_hash_rows_by_layer": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "annotation_bracket_check": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "juan": { "type": "integer" },
+          "open": { "type": "integer" },
+          "close": { "type": "integer" },
+          "balanced": { "type": "boolean" }
+        }
+      }
     }
-  }
+  },
+  "additionalProperties": false
 }
-

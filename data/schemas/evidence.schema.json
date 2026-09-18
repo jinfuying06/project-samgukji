@@ -1,22 +1,49 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.local/schemas/evidence.schema.json",
-  "title": "Source Evidence Span",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tkaf.local/schemas/evidence.schema.json",
+  "title": "Evidence span",
+  "description": "One located, source-layer-tagged span of text supporting a claim, event, or code. Full original text lives only in the private analysis zone; this record carries locators, a checksum, and (optionally) a short permitted excerpt, never the full passage, per research/source_policy.md.",
   "type": "object",
-  "additionalProperties": false,
-  "required": ["evidence_id", "source_id", "source_layer", "locator", "text_status", "review_status", "entity_refs"],
+  "required": [
+    "evidence_id", "source_id", "source_layer", "work_id", "work_title",
+    "volume_or_chapter", "locator", "text_hash", "original_language_text_status",
+    "translation_type", "extraction_reviewer", "review_status", "confidence",
+    "coding_validation_status"
+  ],
   "properties": {
-    "evidence_id": {"type": "string", "pattern": "^EVD-[0-9]{5,}$"},
-    "source_id": {"type": "string"},
-    "source_layer": {"enum": ["HISTORY_BASE", "HISTORY_ANNOTATION", "ROMANCE", "LATER_INTERPRETATION", "GAME_DATA"]},
-    "locator": {"type": "string", "minLength": 1},
-    "text_status": {"enum": ["original", "licensed_translation", "project_translation", "paraphrase", "location_only"]},
-    "text": {"type": ["string", "null"]},
-    "entity_refs": {"type": "array", "items": {"type": "string"}},
-    "event_refs": {"type": "array", "items": {"type": "string"}},
-    "review_status": {"enum": ["unreviewed", "single_review", "double_review", "adjudicated"]},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-    "ambiguity_note": {"type": ["string", "null"]}
-  }
+    "evidence_id": { "type": "string", "description": "Stable ID, e.g. ev.hist.01.42.base or ev.hist.01.42.ann.0 or ev.rom.049.7." },
+    "source_id": { "type": "string", "description": "Identifies the crawled source document (work + volume/chapter)." },
+    "source_layer": { "type": "string", "enum": ["HISTORY_BASE", "HISTORY_ANNOTATION", "ROMANCE", "LATER_INTERPRETATION", "GAME_DATA"] },
+    "work_id": { "type": "string", "enum": ["sanguozhi", "sanguoyanyi"] },
+    "work_title": { "type": "string" },
+    "edition_ref": { "type": ["string", "null"], "description": "Edition/printing identifier once more than one edition exists; null while only one edition is present (see data/normalization_plan.md)." },
+    "volume_or_chapter": { "type": "string", "description": "e.g. '卷01' or '回49'." },
+    "locator": {
+      "type": "object",
+      "required": ["paragraph_index"],
+      "properties": {
+        "paragraph_index": { "type": "integer", "minimum": 0 },
+        "annotation_index": { "type": ["integer", "null"], "minimum": 0, "description": "Set only for HISTORY_ANNOTATION spans; a paragraph may embed more than one bracketed annotation run." },
+        "char_start": { "type": ["integer", "null"] },
+        "char_end": { "type": ["integer", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "text_hash": { "type": "string", "description": "sha256 of the exact extracted text, for reproducibility and duplicate detection." },
+    "original_language_text_status": { "type": "string", "enum": ["stored_private_only", "excerpt_in_repo", "not_retrievable"] },
+    "permitted_excerpt": { "type": ["string", "null"], "maxLength": 200, "description": "Optional short excerpt only, never the full paragraph, even though this corpus is owner-confirmed public domain (handoffs/DECISIONS.md#D-012) — repo commit policy in data/DATA_ZONES.md still excludes bulk crawled text." },
+    "translation_type": { "type": "string", "enum": ["none_original_only", "publisher", "project", "paraphrase"] },
+    "person_refs": { "type": "array", "items": { "type": "string", "pattern": "^person\\.[a-z0-9_]+$" } },
+    "event_refs": { "type": "array", "items": { "type": "string", "pattern": "^event\\.[a-z0-9_]+$" } },
+    "extraction_reviewer": { "type": "string", "description": "Human or role responsible for this extraction; 'unreviewed' if not yet checked by a person." },
+    "review_status": { "type": "string", "enum": ["unreviewed", "single_coded", "double_coded", "adjudicated"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "coding_validation_status": {
+      "type": "string",
+      "enum": ["llm_llm_validated_only", "human_validated"],
+      "description": "Added S3/E1 (D-017). Mandatory disclosure of whether this evidence's coding has been human-reviewed. Matches app/architecture/api_contract.yaml's EvidenceSpan field of the same name — do not let the two drift apart again."
+    },
+    "ambiguity_note": { "type": ["string", "null"], "description": "Null means not applicable, never a stand-in for missing/low confidence." }
+  },
+  "additionalProperties": false
 }
-

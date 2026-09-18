@@ -1,6 +1,6 @@
 # TKAF Design Standard
 
-Status: `STARTER — activate after B1; replace or refine before B2 development approval`
+Status: `ACTIVE (S2, 2026-09-17) — refined for the Hybrid concept, 적벽대전 vertical slice, per B1 approval (handoffs/APPROVALS.md). §1–10 are the general standard (unchanged in substance from the starter, checked against Hybrid/적벽대전 for conflicts — none found). §11's tokens are a UX-designer-proposed initial system, not final branding — the human owner may replace them freely without needing a new stage approval.`
 
 이 파일은 프로젝트의 **공식 시각·인터랙션 디자인 기준**입니다. 외부에서 준비한 `design.md`가 있다면 내용을 이 파일에 붙여넣거나 이 파일을 교체하되, 아래의 도메인 필수 규칙은 유지합니다.
 
@@ -143,17 +143,27 @@ Status: `STARTER — activate after B1; replace or refine before B2 development 
 
 ## 11. Project-specific tokens
 
-실제 디자인 방향이 정해지면 아래를 채웁니다.
+`S2 PROPOSAL — 2026-09-17`. Initial system for "역사 아카이브의 신뢰감 + 전략 게임의 탐험성" (§1). The human owner may replace any value here without a new stage approval; this is a starting point, not a locked brand system. Every source-layer color below is paired with an icon + text label per §3 — never color alone.
 
-- Color palette: `[TBD]`
-- Typography: `[TBD]`
-- Spacing scale: `[TBD]`
-- Radius/elevation: `[TBD]`
-- Motion duration/easing: `[TBD]`
-- Breakpoints: `[TBD]`
-- Icon style: `[TBD]`
+- **Color palette** (semantic tokens, not literal hex — implementer picks exact values meeting §10 contrast):
+  - `color.bg.base` — warm off-white "parchment" background (light mode); deep neutral ink background (dark mode), never pure black/white.
+  - `color.text.primary` — near-black ink (light) / near-white (dark), high contrast.
+  - `color.layer.history_base` — deep indigo (정사).
+  - `color.layer.history_annotation` — muted violet, visually related to but distinct from `history_base` (정사 주석 — a commentary on history, not a rival layer).
+  - `color.layer.romance` — warm bronze/amber (연의 — literary, warmer than the two history tones).
+  - `color.layer.later_interpretation` — neutral slate gray (연구·해석).
+  - `color.layer.game_data` — one clearly distinct saturated accent (e.g., teal), reserved *only* for `GAME_DATA` mode so it can never be visually confused with an actual historical/literary layer, and *never* reused for the learning-game UI chrome itself (quest/badge chrome uses neutral + accent-on-action, not the `game_data` layer color, to avoid implying quest progress is `GAME_DATA`).
+  - `color.state.insufficient` / `color.state.stale` / `color.state.error` — each a distinct hue, never color-only (icon + text required per §3/§10).
+- **Typography**: one humanist sans with strong Hangul + Hanzi (simplified/traditional) + Latin coverage for UI and body text (e.g. a Noto Sans CJK-class family); headings use the same family at heavier weight, not a separate display face — avoids §1's "붓글씨/고서풍 장식" pitfall while still reading as an "archive," via hierarchy and spacing rather than decorative type.
+  - CJK body text ships slightly larger and looser-tracked than a Latin-only default, to keep 정사/연의 excerpts and evidence text legible.
+- **Spacing scale**: 4px base unit — 4/8/12/16/24/32/48/64.
+  - Reflects §2's fixed information-hierarchy order (source mode → observation → coverage → contribution → evidence → locator → AI explanation): sections use the 24/32 step, in-section elements use 8/12/16.
+- **Radius/elevation**: small–medium radius (4px controls, 8–12px cards) — an "archive card" feel, not a rounded playful-game feel; elevation via a single subtle shadow level for raised cards (EvidenceCard, ScoreCard), no heavy game-UI bevels/gloss even in learning-game mode.
+- **Motion duration/easing**: 120–200ms standard ease for UI state changes (mode switch, card expand); learning-game reward/quest-complete feedback may run slightly longer (200–320ms) but must have a fully static fallback under `prefers-reduced-motion` (§10) — never required to perceive the outcome.
+- **Breakpoints**: mobile `<640px` (single column, source mode + context pinned top, §8), tablet `640–1024px` (staged parallel evidence/analysis), desktop `>1024px` (side-by-side source-layer panels in 비교 mode, §8).
+- **Icon style**: simple line icons for UI chrome and source-layer badges (not skeuomorphic, not pixel-art) — keeps every layer/state distinguishable without color alone. If an 8-bit/pixel motif is ever introduced (explicit non-goal for S1/S2/S3, `product/feature_spec.md`), it stays confined to optional decorative flourish inside learning-game mode and must never be the *only* carrier of a layer/state's meaning.
 
-토큰은 코드에 흩어진 상수보다 중앙 theme/token 파일로 구현합니다.
+Tokens are implemented as a central theme/token file, not constants scattered through component code.
 
 ## 12. Decision priority
 

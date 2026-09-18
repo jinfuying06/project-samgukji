@@ -1,3 +1,25 @@
-field_name,type,nullable,unit,description,source_field,allowed_values,missing_meaning,sensitive,transform_rule
-record_id,string,false,,Stable pseudonymous identifier,,,not_applicable,false,
-
+table,column,type,unit,nullable,missing_meaning,description
+evidence_candidates,evidence_id,string,-,false,-,Stable ID for one extracted paragraph or annotation run; see data/schemas/evidence.schema.json
+evidence_candidates,source_layer,enum,-,false,-,One of HISTORY_BASE/HISTORY_ANNOTATION/ROMANCE; never merged across layers
+evidence_candidates,work_id,enum,-,false,-,sanguozhi or sanguoyanyi
+evidence_candidates,work_title,string,-,false,-,Original work title as recorded in the crawled source
+evidence_candidates,unit,enum,-,false,-,卷 (juan) for history, 回 (hui) for romance
+evidence_candidates,num,integer,-,false,-,Juan or hui number within the work
+evidence_candidates,chapter_title,string,-,true,unknown/not recorded by source; not zero,Chapter/juan title as crawled
+evidence_candidates,paragraph_index,integer,paragraphs from file start,false,-,0-based index of the newline-delimited paragraph within the source file's body_text
+evidence_candidates,annotation_index,integer,annotation runs within a paragraph,true,not applicable for HISTORY_BASE/ROMANCE rows; not zero,0-based index when a single paragraph contains more than one bracketed annotation run
+evidence_candidates,text_hash,string (sha256),-,false,-,Hash of the exact extracted text; used for duplicate detection and reproducibility, not a substitute for storing the text
+evidence_candidates,text_len,integer,UTF-8 characters,false,-,Length of the extracted text; used for coverage/QA only, never for scoring
+evidence_candidates,source_url_domain,string,-,true,domain not resolvable from source field; not zero,Domain only (never full URL) of the crawled source, per data/manifests/README.md
+evidence_candidates,crawled_at,string (date),-,true,not recorded by original crawl; not zero,Original crawl date carried from the raw JSON
+person_registry,person_id,string,-,false,-,Canonical person ID; pattern person.<slug>; see data/schemas/person.schema.json
+person_registry,canonical_name_zh,string,-,false,-,Canonical Chinese name
+person_registry,aliases[].alias,string,-,false,-,An alias form actually observed in the extracted text (never invented)
+person_registry,aliases[].type,string,-,false,-,"Alias category, e.g. courtesy_name(字), nickname, honorific"
+person_registry,aliases[].observed_in,array<enum>,-,false,-,Source layer(s) where this alias form was actually found
+run_manifest,pipeline_version,string,-,false,-,Semantic version of data/pipelines/build_chibi_sample.py
+run_manifest,generated_at,string (ISO8601 UTC),-,false,-,Timestamp of this pipeline run
+run_manifest,input_file_hashes,object<string,string>,-,false,-,Relative raw path -> sha256 of every raw file this run actually read
+run_manifest,row_counts_by_layer,object<string,int>,rows,false,-,Evidence-candidate paragraph/annotation-run counts per source layer for this sample
+run_manifest,duplicate_text_hash_rows_by_layer,object<string,int>,rows,false,-,Count of rows within a layer sharing a text_hash with another row (0 expected for a clean sample)
+run_manifest,annotation_bracket_check,array<object>,-,false,-,Per-juan U+3008/U+3009 bracket open/close counts used to split HISTORY_BASE from HISTORY_ANNOTATION; balanced:false flags a raw-text anomaly requiring manual review, not a pipeline bug to silently patch

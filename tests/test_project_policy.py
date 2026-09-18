@@ -32,10 +32,15 @@ class ProjectPolicyTests(unittest.TestCase):
         self.assertEqual(schema["title"], "Approved Application Export Manifest")
         self.assertIn("approval_ref", schema["required"])
 
-    def test_concept_is_undecided(self):
+    def test_concept_decision_is_recorded_not_silent(self):
+        # B0 decided the concept (handoffs/DECISIONS.md#D-009); this guards against a
+        # *silent*, undocumented re-decision, not against the decision itself existing.
         decision = (ROOT / "product" / "concepts" / "concept_decision.yaml").read_text(encoding="utf-8")
-        self.assertIn("status: undecided", decision)
-        self.assertIn("selected_concept: null", decision)
+        self.assertIn("status: decided", decision)
+        self.assertIn("selected_concept: hybrid", decision)
+        self.assertIn("decision_rationale_ref:", decision)
+        decisions_log = (ROOT / "handoffs" / "DECISIONS.md").read_text(encoding="utf-8")
+        self.assertIn("D-009", decisions_log)
 
 
 if __name__ == "__main__":

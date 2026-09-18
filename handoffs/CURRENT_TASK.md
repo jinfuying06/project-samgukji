@@ -1,49 +1,11 @@
 # Current Task
 
-- Task ID: `TASK-S0-SETUP`
-- Role: `orchestrator`
-- Status: `READY`
-- Priority: `P0`
-- Depends on: `human project owner input`
+- Task ID: none
+- Role: none
+- Status: `NO_ACTIVE_TASK`
 
-## Objective
+## Note
 
-Launch only the S0 concept, private-raw inventory, and research-feasibility tracks; prepare a documented B0 decision without selecting a concept in advance.
+The previous entry here (`TASK-S3-ARCHITECTURE-AND-EXPANSION`) was left `IN_PROGRESS` after S3 finished and was not updated to match. S3 is complete (B3 `approved_with_conditions`, D-025) and further work continued through D-032 (see `handoffs/PROJECT_STATE.md` and `handoffs/DECISIONS.md`). The project is at a natural pause point: nothing active, nothing blocked.
 
-## Required inputs
-
-- Existing project scaffold
-- User-provided private raw Chinese corpus location
-- Product hypotheses and data/privacy constraints
-
-## Allowed write paths
-
-- `PROJECT_BRIEF.md`
-- `product/concepts/`
-- `data/ingestion_report.md`
-- `data/normalization_plan.md`
-- `product/problem_definition.md`
-- `product/target_user.md`
-- `handoffs/OPEN_QUESTIONS.md`
-- `handoffs/LAST_HANDOFF.md`
-- `handoffs/phase_reports/S0_COMPLETION.md`
-
-## Deliverables
-
-- Three product concepts compared with evidence
-- Read-only raw inventory summarized without committing private data
-- Research/data feasibility and open rights questions
-- S0 completion report and exact B0 approval question
-
-## Acceptance checks
-
-- No raw file is moved, overwritten, normalized, or committed
-- No product concept is silently selected
-- Material questions are recorded and asked
-- B0 report states proposed S1 scope and waits for explicit approval
-
-## Do not do
-
-- Do not implement application code, pixel battles, curriculum, or production UI.
-- Do not normalize the raw corpus or run full-corpus analysis.
-- Do not proceed to S1 before B0 approval is recorded.
+The next task depends on a human decision among the options listed in `handoffs/PROJECT_STATE.md`'s "Next steps" section (treat as done / continue depth-first / expand breadth / move toward S4). Do not start work here until that choice is made and this file is filled in per `handoffs/HANDOFF_TEMPLATE.md`'s task-opening fields (role, inputs, deliverables, write paths, completion conditions).

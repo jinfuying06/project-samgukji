@@ -1,6 +1,9 @@
 version: 1
-status: undecided
-selected_concept: null
+status: decided
+selected_concept: hybrid
+decided_at: "2026-09-17"
+decided_by: human_project_owner
+decision_rationale_ref: handoffs/DECISIONS.md#D-009
 candidate_concepts:
   - analytics_explorer
   - data_analysis_learning_game

@@ -1,57 +1,416 @@
 openapi: 3.1.0
 info:
-  title: TKAF API
-  version: 0.1.0-draft
-  description: Draft contract. Freeze only after Research and Design Gates.
+  title: TKAF API — 적벽대전 Vertical Slice
+  version: 1.0.0-slice
+  description: >
+    Frozen contract for the 적벽대전 (Battle of Red Cliffs) vertical slice, Hybrid concept
+    (handoffs/DECISIONS.md#D-009..#D-019). Backend and frontend may implement independently
+    against this contract. No response invents a field not backed by
+    data/schemas/*.schema.json, analysis/schemas/result.schema.json, or
+    analysis/schemas/interpretation.schema.json. All list endpoints are array-shaped
+    (never a fixed 5-element object) so the D-016 cast/evidence expansion needs no
+    contract change.
+
+servers:
+  - url: /v1
+
 paths:
-  /v1/people/{person_id}:
+  /events/{event_id}:
     get:
-      summary: Get canonical person and aliases
-      parameters:
-        - name: person_id
-          in: path
-          required: true
-          schema: {type: string}
-      responses:
-        "200":
-          description: Person
-        "404":
-          description: Unknown person
-  /v1/events/{event_id}/compare:
-    get:
-      summary: Compare source-layer representations of an event
+      summary: Event overview — cast, source-layer coverage, dataset version
       parameters:
         - name: event_id
           in: path
           required: true
-          schema: {type: string}
+          schema: { type: string, pattern: '^event\.[a-z0-9_]+$' }
+          example: event.chibi
       responses:
         "200":
-          description: Source-aware comparison with evidence references
-  /v1/scores/{person_id}:
+          description: Event with participant list and per-layer coverage
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Event'
+                  - type: object
+                    required: [dataset_version]
+                    properties:
+                      dataset_version: { $ref: '#/components/schemas/DatasetVersionRef' }
+        "404":
+          description: Unknown event
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /events/{event_id}/people:
     get:
-      summary: Get explainable versioned scores
+      summary: Cast for this event with per-layer evidence coverage counts (not a fixed-size list — D-016)
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Array of people with coverage; array length is not assumed fixed
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [event_id, dataset_version, people]
+                properties:
+                  event_id: { type: string }
+                  dataset_version: { $ref: '#/components/schemas/DatasetVersionRef' }
+                  people:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/Person'
+                        - type: object
+                          required: [evidence_coverage]
+                          properties:
+                            evidence_coverage:
+                              type: object
+                              description: Per-source-layer evidence count for this person in this event. A missing or 0 count means "no coded span," never "score of zero."
+                              additionalProperties: { type: integer, minimum: 0 }
+
+  /people/{person_id}/evidence:
+    get:
+      summary: Evidence spans for one person, optionally filtered by event/source layer
       parameters:
         - name: person_id
           in: path
           required: true
-          schema: {type: string}
-        - name: source_mode
+          schema: { type: string, pattern: '^person\.[a-z0-9_]+$' }
+        - name: event_id
           in: query
-          required: true
-          schema:
-            enum: [history_base, history_annotation, romance, custom, external_game]
+          required: false
+          schema: { type: string }
+        - name: source_layer
+          in: query
+          required: false
+          schema: { $ref: '#/components/schemas/SourceLayer' }
       responses:
         "200":
-          description: Score, coverage, confidence, and contributions
-        "422":
-          description: Insufficient evidence
-  /v1/ask:
-    post:
-      summary: Ask a source-constrained question
-      responses:
-        "200":
-          description: Grounded response with evidence refs
-        "422":
-          description: Insufficient evidence or unsafe request
+          description: Array of evidence spans (never merges source layers into one row)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [person_id, dataset_version, evidence]
+                properties:
+                  person_id: { type: string }
+                  dataset_version: { $ref: '#/components/schemas/DatasetVersionRef' }
+                  evidence:
+                    type: array
+                    items: { $ref: '#/components/schemas/EvidenceSpan' }
+        "404":
+          description: Unknown person
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /events/{event_id}/metrics:
+    get:
+      summary: Analysis metrics for this event (coverage / label_frequency / divergence). No composite score exists in this slice — do not request one.
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: kind
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [coverage, label_frequency, divergence]
+          description: Filter by metric_id prefix. Omit to receive all three kinds.
+      responses:
+        "200":
+          description: Metrics array, straight from analysis/outputs/result.json (never recomputed by the API)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [event_id, dataset_version, population, metrics, limitations]
+                properties:
+                  event_id: { type: string }
+                  dataset_version: { $ref: '#/components/schemas/DatasetVersionRef' }
+                  population: { $ref: '#/components/schemas/Population' }
+                  metrics:
+                    type: array
+                    items: { $ref: '#/components/schemas/Metric' }
+                  limitations:
+                    type: array
+                    items: { type: string }
+                  warnings:
+                    type: array
+                    items: { type: string }
+        "409":
+          description: >
+            No composite/display score exists for this slice (analysis/scoring_model.md
+            stops before the weighting stage). Returned only if a client requests a
+            score-type metric kind not in the enum above — the API rejects the request
+            rather than fabricating a number.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /events/{event_id}/relationships:
+    get:
+      summary: Person-to-person relationship edges, one graph per source layer (never merged)
+      parameters:
+        - name: event_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: source_layer
+          in: query
+          required: false
+          schema: { $ref: '#/components/schemas/SourceLayer' }
+      responses:
+        "200":
+          description: Edge array, grouped by source_layer client-side — the API never pre-merges layers into one graph
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [event_id, dataset_version, edges]
+                properties:
+                  event_id: { type: string }
+                  dataset_version: { $ref: '#/components/schemas/DatasetVersionRef' }
+                  edges:
+                    type: array
+                    items: { $ref: '#/components/schemas/RelationshipEdge' }
+                  no_centrality_computed:
+                    type: boolean
+                    const: true
+                    description: Always true in this slice — analysis/network_analysis_plan.md explicitly declines to compute centrality at this N. Present so the frontend never has to infer "why is there no centrality field."
+
+  /ask:
+    post:
+      summary: Source-constrained AI question — response is exactly analysis/schemas/interpretation.schema.json's shape
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [event_id, question, answer_mode]
+              properties:
+                event_id: { type: string }
+                question: { type: string, minLength: 1 }
+                answer_mode: { $ref: '#/components/schemas/AnswerMode' }
+      responses:
+        "200":
+          description: >
+            Always 200 for a well-formed request — a refusal is a valid, schema-conformant
+            response (status=insufficient_evidence/abstained), not an HTTP error.
+            Every response is validated against analysis/schemas/interpretation.schema.json
+            by the backend's LLM response validator before being returned; an LLM output
+            that fails validation is retried once, then converted to a
+            status=insufficient_evidence response with abstention_reason="internal
+            validation failure" — it is never passed through unvalidated.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Interpretation' }
+        "400":
+          description: Malformed request (missing field, unknown event_id/answer_mode)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        "429":
+          description: Rate limited
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        "503":
+          description: External LLM provider unavailable — distinct from insufficient_evidence (that's a valid 200; this is a service failure)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /version:
+    get:
+      summary: Currently-served dataset/schema version and coding-validation status
+      responses:
+        "200":
+          description: Transparency endpoint — lets the frontend/QA confirm what data version is live
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DatasetVersionRef' }
+
+components:
+  schemas:
+    SourceLayer:
+      type: string
+      enum: [HISTORY_BASE, HISTORY_ANNOTATION, ROMANCE, LATER_INTERPRETATION, GAME_DATA]
+
+    AnswerMode:
+      type: string
+      enum: ["정사", "연의", "비교", "게임"]
+
+    ErrorResponse:
+      type: object
+      required: [error_code, message]
+      properties:
+        error_code: { type: string }
+        message: { type: string }
+
+    DatasetVersionRef:
+      type: object
+      description: Traces every response back to a reproducible pipeline run (dataset.schema.json / run_manifest.json) and discloses coding-validation status (D-017) at the API level, not only inside AI answers.
+      required: [pipeline_version, run_id, coding_validation_status]
+      properties:
+        pipeline_version: { type: string }
+        run_id: { type: string }
+        generated_at: { type: string, format: date-time }
+        coding_validation_status:
+          type: string
+          enum: [llm_llm_validated_only, human_validated]
+          description: D-017 disclosure field. Was llm_llm_validated_only for this slice (research/intercoder_reliability.md, κ=0.90) until the human owner's review; as of D-024 (2026-09-18) the current value is human_validated. Do not hardcode either value as "current" here — read it from the dataset version at request time.
+
+    Population:
+      type: object
+      required: [n, description]
+      properties:
+        n: { type: integer, minimum: 0 }
+        description: { type: string }
+
+    Metric:
+      type: object
+      required: [metric_id, name, value, unit]
+      properties:
+        metric_id: { type: string }
+        name: { type: string }
+        value: { type: [number, "null"] }
+        unit: { type: string }
+        interval_low: { type: [number, "null"] }
+        interval_high: { type: [number, "null"] }
+        method: { type: string, description: "For divergence.* metrics, currently carries the classification + evidence_ids as text pending a typed schema extension (product/data_to_ui_mapping.md 'Known schema gap')." }
+
+    Person:
+      type: object
+      required: [person_id, canonical_name_zh, aliases]
+      properties:
+        person_id: { type: string, pattern: '^person\.[a-z0-9_]+$' }
+        canonical_name_zh: { type: string }
+        canonical_name_ko: { type: [string, "null"] }
+        aliases:
+          type: array
+          items:
+            type: object
+            required: [alias, type, observed_in]
+            properties:
+              alias: { type: string }
+              type: { type: string }
+              observed_in:
+                type: array
+                items: { $ref: '#/components/schemas/SourceLayer' }
+
+    Event:
+      type: object
+      required: [event_id, event_name, participants, source_layer_coverage]
+      properties:
+        event_id: { type: string, pattern: '^event\.[a-z0-9_]+$' }
+        event_name: { type: string }
+        event_name_zh: { type: string }
+        location: { type: [string, "null"] }
+        participants:
+          type: array
+          items:
+            type: object
+            required: [person_id, role, source_layer]
+            properties:
+              person_id: { type: string }
+              role: { type: string }
+              source_layer: { $ref: '#/components/schemas/SourceLayer' }
+              evidence_refs: { type: array, items: { type: string } }
+        outcome: { type: [string, "null"] }
+        source_layer_coverage:
+          type: array
+          items: { $ref: '#/components/schemas/SourceLayer' }
+
+    EvidenceSpan:
+      type: object
+      description: Curated-export shape (data/schemas/evidence.schema.json), NOT the raw research/evidence_matrix.csv shape — the Curated Export Transform (app/architecture/system.md) normalizes locator into a structured object and person_refs into an array before this API ever sees a row.
+      required: [evidence_id, source_layer, work_title, volume_or_chapter, locator, coding_label, confidence, review_status, coding_validation_status]
+      properties:
+        evidence_id: { type: string }
+        source_layer: { $ref: '#/components/schemas/SourceLayer' }
+        work_title: { type: string }
+        edition_ref: { type: [string, "null"] }
+        volume_or_chapter: { type: string }
+        locator:
+          type: object
+          required: [paragraph_index]
+          properties:
+            paragraph_index: { type: integer, minimum: 0 }
+            annotation_index: { type: [integer, "null"] }
+            char_start: { type: [integer, "null"] }
+            char_end: { type: [integer, "null"] }
+        permitted_excerpt: { type: [string, "null"], maxLength: 200 }
+        coding_label: { type: string }
+        person_refs: { type: array, items: { type: string, pattern: '^person\.[a-z0-9_]+$' } }
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Normalized to a 0-1 float by the Curated Export Transform from the research CSV's high/medium string (per data_to_ui_mapping.md's noted gap) — mapping table owned by whoever implements the transform, recorded as an ADR.
+        review_status: { type: string, enum: [unreviewed, single_coded, double_coded, adjudicated] }
+        coding_validation_status:
+          type: string
+          enum: [llm_llm_validated_only, human_validated]
+          description: Row-level mirror of DatasetVersionRef.coding_validation_status — required on every evidence row so a UI can never accidentally drop the D-017 disclosure by only checking the top-level field.
+        ambiguity_note: { type: [string, "null"] }
+
+    RelationshipEdge:
+      type: object
+      required: [edge_id, from_person_id, to_person_id, relation_type, direction, source_layer, confidence, evidence_refs]
+      properties:
+        edge_id: { type: string }
+        from_person_id: { type: string }
+        to_person_id: { type: string }
+        relation_type: { type: string }
+        direction: { type: string, enum: [directed, undirected] }
+        source_layer: { $ref: '#/components/schemas/SourceLayer' }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        evidence_refs: { type: array, minItems: 1, items: { type: string } }
+
+    Interpretation:
+      type: object
+      description: Exactly analysis/schemas/interpretation.schema.json — see that file for the authoritative, machine-validated definition. Duplicated here only for OpenAPI tooling; the JSON Schema file is the source of truth on any discrepancy.
+      required: [interpretation_id, answer_mode, status, generated_at, model, prompt_version, input_refs, claims]
+      properties:
+        interpretation_id: { type: string }
+        answer_mode: { $ref: '#/components/schemas/AnswerMode' }
+        status: { type: string, enum: [ok, insufficient_evidence, abstained] }
+        generated_at: { type: string, format: date-time }
+        model:
+          type: object
+          required: [name, version]
+          properties:
+            name: { type: string }
+            version: { type: string }
+        prompt_version: { type: string }
+        input_refs:
+          type: object
+          required: [result_json_run_id, evidence_matrix_checksum]
+          properties:
+            result_json_run_id: { type: string }
+            evidence_matrix_checksum: { type: string }
+        abstention_reason: { type: string }
+        coding_validation_notice: { type: string }
+        claims:
+          type: array
+          items:
+            type: object
+            required: [claim_id, claim_type, text, evidence_refs, metric_refs, confidence]
+            properties:
+              claim_id: { type: string }
+              claim_type: { type: string, enum: [observation, interpretation, recommendation] }
+              text: { type: string }
+              evidence_refs: { type: array, items: { type: string, pattern: '^(HB|HA|RM)-.+' } }
+              metric_refs: { type: array, items: { type: string } }
+              confidence: { type: string, enum: [high, medium, low] }
+              caveats: { type: array, items: { type: string } }

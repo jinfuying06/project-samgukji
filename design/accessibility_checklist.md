@@ -1,18 +1,23 @@
-# Accessibility Checklist
+# Accessibility Checklist — S2 (적벽대전 Vertical Slice, Hybrid)
 
-Status values: `PASS`, `FAIL`, `N/A`, `NOT_TESTED`.
+Status values: `PASS`, `FAIL`, `N/A`, `NOT_TESTED`. **All rows remain `NOT_TESTED`** — no UI has been implemented yet (S3 is still gated behind B2). The Evidence/issue column specifies exactly what must be checked once S3 builds these screens/components, so implementers don't have to guess. Do not mark anything `PASS` before real testing occurs.
 
-| Area | Check | Status | Evidence/issue |
+| Area | Check | Status | Evidence/issue (what to verify, once built) |
 | --- | --- | --- | --- |
-| Structure | One logical page heading and ordered headings | NOT_TESTED |  |
-| Keyboard | All actions reachable and usable | NOT_TESTED |  |
-| Focus | Visible focus and sensible focus movement | NOT_TESTED |  |
-| Names | Controls have accessible names | NOT_TESTED |  |
-| Status | Async status/errors announced appropriately | NOT_TESTED |  |
-| Contrast | Text and controls meet target contrast | NOT_TESTED |  |
-| Color | Meaning is not color-only | NOT_TESTED |  |
-| Zoom | Works at 200% and narrow viewport | NOT_TESTED |  |
-| Motion | Reduced-motion preference respected | NOT_TESTED |  |
-| Charts | Text summary/table alternative available | NOT_TESTED |  |
-| Language | Uncertainty and limitations use plain language | NOT_TESTED |  |
+| Structure | One logical page heading and ordered headings | NOT_TESTED | Each of the 6 screens in `design/wireframe_brief.md` uses exactly one `<h1>`; `SourceModeControl`'s tab/pill list and `EvidenceCard` titles use heading levels that don't skip (e.g. S-001's cast list must not jump `<h1>` → `<h3>`). |
+| Keyboard | All actions reachable and usable | NOT_TESTED | `SourceModeControl`'s roving-tabindex pill navigation (`component_spec.md`); `QuestCard`'s "완료" button is reachable while `aria-disabled` and its unmet-gate reason is keyboard-discoverable; `EvidenceCard`'s expand/collapse via `Enter`/`Space`; `AIAnswerPanel`'s evidence chips are individually tabbable links. |
+| Focus | Visible focus and sensible focus movement | NOT_TESTED | Switching `SourceModeControl` mode does not silently move focus away from the control; expanding an `EvidenceCard` moves focus into its expanded content; S-004→S-002 evidence-chip navigation lands focus on the target card, not the top of the page. |
+| Names | Controls have accessible names | NOT_TESTED | `ScoreCard`'s accessible name includes `metric_kind` + value (never a bare number, per `component_spec.md`); `SourceModeControl` options are named by their DESIGN.md§3 label text, never the raw enum string (`HISTORY_ANNOTATION`); `QuestCard` region has a name describing its goal, not just "Quest". |
+| Status | Async status/errors announced appropriately | NOT_TESTED | `QuestCard`'s gate-progress live-region announces which condition remains unmet after each evidence view; `AIAnswerPanel`'s loading→answered/abstained transition is announced, with abstained claims announced distinctly from answered ones (`component_spec.md`). |
+| Contrast | Text and controls meet target contrast | NOT_TESTED | All 5 `color.layer.*` tokens (`design/DESIGN.md`§11) against both `color.bg.base` light and dark variants; disabled `SourceModeControl`/weight-lab controls still meet the non-text contrast minimum for their disabled affordance to be perceivable. |
+| Color | Meaning is not color-only | NOT_TESTED | Every source-layer badge (`EvidenceCard`, `SourceModeControl`) pairs color with an icon + the DESIGN.md§3 text label; `ScoreCard`'s `score_type` (default/user_custom/external_game/insufficient_data) is distinguishable by more than container color alone (`design/DESIGN.md`§4). |
+| Zoom | Works at 200% and narrow viewport | NOT_TESTED | S-002's side-by-side layer comparison (desktop) reflows to stacked-with-tabs at 200% zoom / mobile width without truncating `excerpt_zh` (CJK text wrapping specifically, per `DESIGN.md`§11 typography note). |
+| Motion | Reduced-motion preference respected | NOT_TESTED | Quest-complete/reward feedback (200–320ms per `DESIGN.md`§11) has a fully static fallback under `prefers-reduced-motion`; mode-switch transitions likewise degrade to an instant state change. |
+| Charts | Text summary/table alternative available | NOT_TESTED | `network_edge_count.*` display (`component_spec.md` visualization rules) has a text/table alternative, not a graph-only view, per `DESIGN.md`§9's "작은 화면에서 넓은 네트워크 그래프만 제공하지 말고" rule — relevant even though no centrality/graph view is built yet, since a future edge-list view is anticipated (see `analysis/network_analysis_plan.md`'s open follow-up on adding a typed `edges` array). |
+| Language | Uncertainty and limitations use plain language | NOT_TESTED | `result.json`'s `limitations[]`/`warnings[]` text (written for a technical audience) is rephrased in plain Korean for S-003's "아직 합성 점수 없음" panel and S-002's D-017 footnote, not shown verbatim as an English technical string. |
+| Data honesty (project-specific, not a standard WCAG line item) | Missing/insufficient data is never rendered identically to a real `0` value | NOT_TESTED | `ScoreCard`/`EvidenceCard` empty-layer states (e.g. 諸葛亮's `HISTORY_ANNOTATION` count = 0) render a distinct "근거 없음" state, never the same visual treatment as a populated card showing the number 0 (`design/DESIGN.md`§4/§7, `agents/_three_kingdoms_domain.md`). |
 
+## Notes for whoever runs this checklist in S3
+
+- This checklist cannot be marked `PASS` from design documents alone — every row requires testing against the actual built screens.
+- If a screen/component described in `design/wireframe_brief.md`/`component_spec.md` changes during implementation, update the Evidence/issue column to match before testing, so the check stays meaningful.

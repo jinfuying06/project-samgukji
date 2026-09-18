@@ -1,0 +1,21 @@
+{
+  "run_id": "run-20260918T065034Z",
+  "script": "analysis/pipelines/compute_chibi_result.py",
+  "script_version": "1.1.0",
+  "executed_at": "2026-09-18T06:50:34.842388+00:00",
+  "input_files": [
+    {
+      "path": "research/evidence_matrix.csv",
+      "sha256": "7a7dae850dc964ece08654145a3bd61dd5a146280780b4cd47ef6413ba113e9a",
+      "row_count": 48
+    }
+  ],
+  "output_files": [
+    {
+      "path": "analysis/outputs/result.json",
+      "sha256": "d1cb79052eaccd1a46f71512c6e04d0ab2f753243370ac70d466fef5e94d53a8"
+    }
+  ],
+  "reproduce_command": "python analysis/pipelines/compute_chibi_result.py",
+  "notes": "Deterministic aggregation script: re-running against an unchanged research/evidence_matrix.csv reproduces identical metrics (run_id and executed_at will differ by design)."
+}

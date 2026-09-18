@@ -33,6 +33,60 @@
         }
       }
     },
+    "edges": {
+      "type": "array",
+      "description": "Person-to-person network edges (analysis/network_analysis_plan.md). Never merge source_layer graphs -- filter by source_layer before any graph view. No centrality is computed anywhere in this pipeline (agents/_three_kingdoms_domain.md); this array is raw edges for descriptive/drill-down use only.",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "relation", "source_layer", "evidence_id", "confidence"],
+        "properties": {
+          "source": {"type": "string", "description": "Canonical person_id (person.xxx), the row's primary_actor."},
+          "source_name_zh": {"type": "string"},
+          "target": {"type": "string", "description": "Canonical person_id (person.xxx), the row's subject_of_claim."},
+          "target_name_zh": {"type": "string"},
+          "relation": {"type": "string", "description": "The evidence row's coding_label."},
+          "source_layer": {"enum": ["HISTORY_BASE", "HISTORY_ANNOTATION", "ROMANCE"]},
+          "evidence_id": {"type": "string"},
+          "confidence": {"type": "string"}
+        }
+      }
+    },
+    "network_summary": {
+      "type": "object",
+      "description": "Descriptive network stats (node/edge counts, density, cross-layer pair overlap). No centrality of any kind (agents/_three_kingdoms_domain.md). Kept separate from `metrics[]` on purpose -- app/backend/api/db.py's metrics endpoint filters to {coverage, label_frequency, divergence} only; network detail belongs here or in `edges`, not `metrics[]`.",
+      "required": ["by_layer", "cross_layer_shared_pair_count", "cross_layer_shared_pairs", "cross_layer_note"],
+      "properties": {
+        "by_layer": {
+          "type": "object",
+          "description": "Keyed by source_layer (HISTORY_BASE/HISTORY_ANNOTATION/ROMANCE).",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["unique_node_count", "edge_count", "density", "density_caution", "unique_node_count_note"],
+            "properties": {
+              "unique_node_count": {"type": "integer", "minimum": 0},
+              "edge_count": {"type": "integer", "minimum": 0},
+              "density": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+              "density_caution": {"type": "string"},
+              "unique_node_count_note": {"type": "string"}
+            }
+          }
+        },
+        "cross_layer_shared_pair_count": {"type": "integer", "minimum": 0},
+        "cross_layer_shared_pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["person_a", "person_b", "relations_by_layer"],
+            "properties": {
+              "person_a": {"type": "string"},
+              "person_b": {"type": "string"},
+              "relations_by_layer": {"type": "object"}
+            }
+          }
+        },
+        "cross_layer_note": {"type": "string"}
+      }
+    },
     "limitations": {"type": "array", "items": {"type": "string"}},
     "warnings": {"type": "array", "items": {"type": "string"}}
   }

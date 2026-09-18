@@ -1,0 +1,73 @@
+{
+  "report_for": "S1/D1 approved_sample_ingestion — 적벽대전 (Battle of Red Cliffs)",
+  "generated_at": "2026-09-17T12:06:27Z",
+  "pipeline": "data/pipelines/build_chibi_sample.py",
+  "pipeline_version": "1.0.0",
+  "row_counts_by_layer": {
+    "HISTORY_BASE": 479,
+    "HISTORY_ANNOTATION": 432,
+    "ROMANCE": 237,
+    "total": 1148
+  },
+  "note_on_row_counts": "These are candidate evidence PARAGRAPHS/annotation-runs, not the final coded evidence set. PROJECT_BRIEF.md's 20-40 evidence-span vertical-slice target applies to R1's curated selection from this pool, not to this raw count.",
+  "duplicate_text_hash_rows_by_layer": {
+    "HISTORY_BASE": 0,
+    "HISTORY_ANNOTATION": 0,
+    "ROMANCE": 0
+  },
+  "evidence_id_uniqueness": {
+    "total_ids": 1148,
+    "unique_ids": 1148,
+    "duplicates": 0
+  },
+  "rows_with_zero_length_text": 0,
+  "person_registry": {
+    "total_persons": 10,
+    "total_aliases": 32,
+    "alias_collisions": [],
+    "note": "Aliases are only forms actually observed in the extracted text (see data/data_dictionary.csv); none were invented.",
+    "updated_2026-09-18": "Originally 5 persons/16 aliases at S1/D1 completion. Grew to 10 persons/32 aliases during the D-016 expansion pass (handoffs/DECISIONS.md#D-021), which added 黃蓋/關羽/魯肅/趙雲/郭嘉 from the same 1,148-paragraph candidate pool below — no new ingestion run was needed. 0 alias collisions re-confirmed at 10 persons by QA's golden-case tests (tests/qa/test_qa_golden_cases.py)."
+  },
+  "curated_evidence_selection": {
+    "note": "The 1,148-row candidate pool below is unchanged since S1/D1. R1's curated selection from it (research/evidence_matrix.csv) grew from 22 to 30 rows in the D-016 expansion pass — see handoffs/DECISIONS.md#D-021 for the exact layer breakdown (HISTORY_BASE 6 / HISTORY_ANNOTATION 11 / ROMANCE 13)."
+  },
+  "annotation_bracket_extraction_method": "Chinese Wikisource marks 裴松之注 (Pei Songzhi commentary) inline in HISTORY_BASE using U+3008/U+3009 angle brackets 〈 〉. Content inside a top-level bracket span is classified HISTORY_ANNOTATION; content outside is HISTORY_BASE. This was chosen over a keyword-marker heuristic (e.g. searching for '臣松之') because it also captures pure quoted-source annotation blocks that carry no 'Pei Songzhi' phrase of their own.",
+  "annotation_bracket_check": [
+    { "juan": 1, "open": 122, "close": 122, "balanced": true },
+    { "juan": 10, "open": 39, "close": 39, "balanced": true },
+    { "juan": 31, "open": 20, "close": 20, "balanced": true },
+    { "juan": 32, "open": 45, "close": 45, "balanced": true },
+    { "juan": 35, "open": 34, "close": 34, "balanced": true },
+    { "juan": 47, "open": 61, "close": 61, "balanced": true },
+    { "juan": 48, "open": 46, "close": 46, "balanced": true },
+    { "juan": 54, "open": 24, "close": 24, "balanced": true },
+    { "juan": 55, "open": 22, "close": 22, "balanced": true },
+    { "juan": 56, "open": 15, "close": 14, "balanced": false }
+  ],
+  "known_issues": [
+    {
+      "id": "QC-D1-1",
+      "severity": "minor",
+      "description": "history_base_zh juan 56 has one unmatched opening 〈 bracket (15 open vs 14 close). The pipeline treats any text after the last unmatched open bracket to end-of-paragraph as annotation (fail-open, not silently discarded), but this juan's HISTORY_ANNOTATION/HISTORY_BASE split should be manually spot-checked before R1 relies on it for evidence selection.",
+      "affected_rows": "juan 56 rows only"
+    }
+  ],
+  "sample_scope": {
+    "event": "Battle of Red Cliffs",
+    "history_juan": [1, 10, 31, 32, 35, 47, 48, 54, 55, 56],
+    "romance_hui": [49, 50, 51, 52, 53, 54, 55, 56, 57],
+    "romance_hui_narrowed_from": [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61],
+    "narrowing_reason": "hui 58-61 pivot to the unrelated Ma Chao/Han Sui campaign; each had 0-1 Chibi-keyword hits versus 3-5 for hui 49-57."
+  },
+  "raw_data_boundary": {
+    "raw_files_modified": false,
+    "raw_files_read_count": 19,
+    "private_analysis_output_paths": [
+      "${TKAF_PRIVATE_DATA_ROOT}/analysis/tables/chibi_evidence_candidates.jsonl",
+      "${TKAF_PRIVATE_DATA_ROOT}/analysis/tables/person_registry.json",
+      "${TKAF_PRIVATE_DATA_ROOT}/analysis/tables/run_manifest.json",
+      "${TKAF_PRIVATE_DATA_ROOT}/analysis/normalized/chibi_paragraphs.jsonl"
+    ],
+    "committed_to_repo": false
+  }
+}

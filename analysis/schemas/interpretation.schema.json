@@ -1,30 +1,126 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.local/schemas/interpretation.schema.json",
-  "title": "Grounded LLM Interpretation",
+  "$id": "https://tkaf.local/schemas/interpretation.schema.json",
+  "title": "LLM Interpretation Output",
+  "description": "Contract for analysis/llm_contract.md. Every claim must be traceable to a real evidence_id (research/evidence_matrix.csv) or metric_id (analysis/outputs/result.json). No claim may exist without at least one of evidence_refs/metric_refs.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["run_id", "status", "claims"],
+  "required": [
+    "interpretation_id",
+    "answer_mode",
+    "status",
+    "generated_at",
+    "model",
+    "prompt_version",
+    "input_refs",
+    "claims"
+  ],
   "properties": {
-    "run_id": {"type": "string"},
-    "status": {"enum": ["complete", "partial", "insufficient_evidence", "refused"]},
+    "interpretation_id": { "type": "string", "minLength": 1 },
+    "answer_mode": { "type": "string", "enum": ["정사", "연의", "비교", "게임"] },
+    "status": { "type": "string", "enum": ["ok", "insufficient_evidence", "abstained"] },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "prompt_version": { "type": "string", "minLength": 1 },
+    "input_refs": {
+      "type": "object",
+      "description": "Which data snapshot this interpretation was grounded in — required so a stale-result state can be detected later.",
+      "additionalProperties": false,
+      "required": ["result_json_run_id", "evidence_matrix_checksum"],
+      "properties": {
+        "result_json_run_id": { "type": "string", "minLength": 1 },
+        "evidence_matrix_checksum": { "type": "string", "minLength": 1 }
+      }
+    },
+    "abstention_reason": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required when status is insufficient_evidence or abstained. Must state what specifically is missing, not just 'unknown'."
+    },
+    "coding_validation_notice": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required whenever any claim's evidence_refs is non-empty (i.e. evidence_matrix.csv is cited). Must disclose that the coding is LLM-LLM validated only (D-017), not human-validated."
+    },
     "claims": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["claim_id", "type", "text", "evidence_refs", "limitations", "risk_level"],
+        "required": ["claim_id", "claim_type", "text", "evidence_refs", "metric_refs", "confidence"],
         "properties": {
-          "claim_id": {"type": "string"},
-          "type": {"enum": ["observation", "interpretation", "recommendation"]},
-          "text": {"type": "string"},
-          "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-          "limitations": {"type": "array", "items": {"type": "string"}},
-          "risk_level": {"enum": ["low", "medium", "high"]}
-        }
+          "claim_id": { "type": "string", "minLength": 1 },
+          "claim_type": { "type": "string", "enum": ["observation", "interpretation", "recommendation"] },
+          "text": { "type": "string", "minLength": 1 },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^(HB|HA|RM)-.+" },
+            "uniqueItems": true
+          },
+          "metric_refs": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "caveats": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "allOf": [
+          {
+            "description": "Every claim must cite at least one real evidence_id OR at least one real metric_id — never neither.",
+            "anyOf": [
+              { "properties": { "evidence_refs": { "minItems": 1 } } },
+              { "properties": { "metric_refs": { "minItems": 1 } } }
+            ]
+          },
+          {
+            "description": "recommendation claims must never carry personalized/diagnostic content — enforced structurally by requiring the same evidence-grounding as any other claim; textual scope (no life advice, no character diagnosis) is enforced by analysis/llm_contract.md rule 4, not by this schema alone.",
+            "if": { "properties": { "claim_type": { "const": "recommendation" } } },
+            "then": { "properties": { "evidence_refs": { "minItems": 1 } } }
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "status=ok requires at least one claim.",
+      "if": { "properties": { "status": { "const": "ok" } } },
+      "then": { "properties": { "claims": { "minItems": 1 } } }
+    },
+    {
+      "description": "status=insufficient_evidence or abstained requires an abstention_reason and forbids claims (nothing partially grounded should be emitted alongside a refusal in this slice's contract).",
+      "if": { "properties": { "status": { "enum": ["insufficient_evidence", "abstained"] } } },
+      "then": {
+        "required": ["abstention_reason"],
+        "properties": { "claims": { "maxItems": 0 } }
       }
     },
-    "global_warning": {"type": ["string", "null"]}
-  }
+    {
+      "description": "if any claim has a non-empty evidence_refs, coding_validation_notice is required (D-017 disclosure).",
+      "if": {
+        "properties": {
+          "claims": {
+            "contains": {
+              "type": "object",
+              "properties": { "evidence_refs": { "minItems": 1 } },
+              "required": ["evidence_refs"]
+            }
+          }
+        }
+      },
+      "then": { "required": ["coding_validation_notice"] }
+    }
+  ]
 }
-

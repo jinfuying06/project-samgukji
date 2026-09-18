@@ -1,0 +1,127 @@
+/*
+ * Design tokens — implements design/DESIGN.md §11 (S2 proposal, human-replaceable).
+ * Central theme file per agents/frontend.md: "토큰은 코드에 흩어진 상수보다 중앙 theme/token 파일로 구현".
+ * Light palette defined on bare :root; dark redefines under prefers-color-scheme and [data-theme].
+ */
+:root {
+  /* base */
+  --color-bg-base: #f6f1e6; /* warm parchment */
+  --color-bg-card: #fffdf8;
+  --color-text-primary: #201c14;
+  --color-text-soft: #5c5346;
+  --color-border: #ddd2ba;
+
+  /* source-layer colors (§3 — always paired with icon + text label, never color alone) */
+  --color-layer-history-base: #33406b; /* 정사 : deep indigo */
+  --color-layer-history-annotation: #7c5a99; /* 정사 주석 : muted violet */
+  --color-layer-romance: #a6702e; /* 연의 : warm bronze/amber */
+  --color-layer-later-interpretation: #5b6472; /* 연구·해석 : neutral slate */
+  --color-layer-game-data: #1f7a72; /* 게임 : distinct teal, reserved for GAME_DATA only */
+
+  /* state colors (§7 — never color-only) */
+  --color-state-insufficient: #8a6d2b;
+  --color-state-stale: #7a5230;
+  --color-state-error: #b0432f;
+  --color-state-success: #3f7a57;
+
+  /* spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* radius / elevation */
+  --radius-control: 4px;
+  --radius-card: 10px;
+  --shadow-card: 0 1px 2px rgba(30, 24, 12, 0.06), 0 4px 12px rgba(30, 24, 12, 0.06);
+
+  /* motion (§11 — must have static fallback under prefers-reduced-motion) */
+  --motion-fast: 120ms ease;
+  --motion-standard: 200ms ease;
+  --motion-reward: 280ms ease;
+
+  /* breakpoints (referenced in CSS via media queries, kept here for documentation) */
+  --breakpoint-tablet: 640px;
+  --breakpoint-desktop: 1024px;
+
+  /* typography */
+  --font-ui: "Noto Sans KR", "Noto Sans", system-ui, sans-serif;
+  --font-display: "Noto Serif KR", "Noto Serif", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg-base: #1c1911;
+    --color-bg-card: #252017;
+    --color-text-primary: #ece4d3;
+    --color-text-soft: #b8ac93;
+    --color-border: #3a3324;
+
+    --color-layer-history-base: #8fa0d6;
+    --color-layer-history-annotation: #c6a8dc;
+    --color-layer-romance: #e0ac66;
+    --color-layer-later-interpretation: #9aa3b0;
+    --color-layer-game-data: #5fcabd;
+
+    --color-state-insufficient: #d8c07a;
+    --color-state-stale: #d3a479;
+    --color-state-error: #e28b78;
+    --color-state-success: #7fc79c;
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg-base: #1c1911;
+  --color-bg-card: #252017;
+  --color-text-primary: #ece4d3;
+  --color-text-soft: #b8ac93;
+  --color-border: #3a3324;
+
+  --color-layer-history-base: #8fa0d6;
+  --color-layer-history-annotation: #c6a8dc;
+  --color-layer-romance: #e0ac66;
+  --color-layer-later-interpretation: #9aa3b0;
+  --color-layer-game-data: #5fcabd;
+
+  --color-state-insufficient: #d8c07a;
+  --color-state-stale: #d3a479;
+  --color-state-error: #e28b78;
+  --color-state-success: #7fc79c;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-ui);
+  line-height: 1.6;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-layer-history-base);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
