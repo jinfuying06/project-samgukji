@@ -63,7 +63,7 @@ export function PersonComparison({ personId, personName, onAskAI }: Props) {
 
   return (
     <section aria-label={`${personName} 근거 비교`}>
-      <h2>{personName}</h2>
+      <h1>{personName}</h1>
       <SourceModeControl options={options} value={mode} onChange={setMode} />
       {evidence.some((e) => e.coding_validation_status !== "human_validated") && (
         <p className="coding-validation-notice" role="note">
@@ -75,7 +75,7 @@ export function PersonComparison({ personId, personName, onAskAI }: Props) {
           const rows = byLayer(layer);
           return (
             <div key={layer} className="evidence-layer-column">
-              <h3>{LAYER_LABEL[layer]}</h3>
+              <h2>{LAYER_LABEL[layer]}</h2>
               {rows.length === 0 ? (
                 <EvidenceCardEmpty layerLabel={LAYER_LABEL[layer]} />
               ) : (

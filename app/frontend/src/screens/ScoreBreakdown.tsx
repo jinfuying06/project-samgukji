@@ -60,7 +60,7 @@ export function ScoreBreakdown({ eventId, personId }: Props) {
 
   return (
     <section aria-label="점수 분해 및 가중치 실험실">
-      <h2>근거 → 코드 → … → 점수</h2>
+      <h1>근거 → 코드 → … → 점수</h1>
       <p className="population-note">
         표본 크기 n={data.population.n}. {data.population.description}
       </p>
@@ -100,7 +100,7 @@ export function ScoreBreakdown({ eventId, personId }: Props) {
 
       {divergence.length > 0 && (
         <div className="metrics-section">
-          <h3>정사·연의 발산 사례 ({divergence.length})</h3>
+          <h2>정사·연의 발산 사례 ({divergence.length})</h2>
           <div className="metrics-grid metrics-grid-wide">
             {divergence.map((m) => (
               <ScoreCard key={m.metric_id} metric={m} scoreType="default" />
@@ -111,7 +111,7 @@ export function ScoreBreakdown({ eventId, personId }: Props) {
 
       {coverage.length > 0 && (
         <div className="metrics-section">
-          <h3>인물×출처층위 근거 커버리지 ({coverage.length})</h3>
+          <h2>인물×출처층위 근거 커버리지 ({coverage.length})</h2>
           <div className="metrics-grid metrics-grid-compact">
             {coverage.map((m) => (
               <ScoreCard key={m.metric_id} metric={m} scoreType="default" />
@@ -122,7 +122,7 @@ export function ScoreBreakdown({ eventId, personId }: Props) {
 
       {labelFreq.length > 0 && (
         <div className="metrics-section">
-          <h3>코딩 라벨 빈도 ({labelFreq.length})</h3>
+          <h2>코딩 라벨 빈도 ({labelFreq.length})</h2>
           <ul className="label-freq-chips">
             {labelFreq.map((m) => (
               <li key={m.metric_id} className="label-freq-chip">
@@ -136,7 +136,7 @@ export function ScoreBreakdown({ eventId, personId }: Props) {
 
       {other.length > 0 && (
         <div className="metrics-section">
-          <h3>기타 지표 ({other.length})</h3>
+          <h2>기타 지표 ({other.length})</h2>
           <div className="metrics-grid metrics-grid-compact">
             {other.map((m) => (
               <ScoreCard key={m.metric_id} metric={m} scoreType="default" />

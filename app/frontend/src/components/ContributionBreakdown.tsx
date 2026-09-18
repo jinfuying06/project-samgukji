@@ -172,7 +172,7 @@ export function ContributionBreakdown({ personId, personName }: Props) {
 
       {!allWeightsZero && contributions.length > 0 && (
         <>
-          <h3>이 가중치에서 부각되는 서술</h3>
+          <h2>이 가중치에서 부각되는 서술</h2>
           <ul className="weight-lab-contributions" data-testid="weight-lab-contributions">
             {contributions.map((c) => (
               <li key={c.label} className="weight-lab-contribution-row">

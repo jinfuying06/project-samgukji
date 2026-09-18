@@ -26,26 +26,23 @@ export function Quest({ onOpenEvidence, onComplete }: Props) {
     evidenceLayerById,
   };
 
-  const layersSatisfied = state.requiresLayers.every((l) =>
-    seen.some((id) => evidenceLayerById[id] === l)
-  );
-  const counterSatisfied = state.counterEvidenceIds.some((id) => seen.includes(id));
-
   return (
     <div>
+      <h1>학습 퀘스트</h1>
+      <p className="quest-intro">
+        지금 할 일: 曹操에 대한 이야기를 정사(역사책)와 연의(소설) 양쪽에서 하나씩 찾아 읽어보세요. 그리고
+        서로 다르게 말하는 근거(반대 근거)도 하나 찾으면, 두 책이 같은 사람을 항상 똑같이 그리지는 않는다는
+        걸 직접 확인할 수 있어요!
+      </p>
       <QuestCard
-        goal="曹操가 왜 졌는지, 정사와 연의가 같은 이유를 대는지 확인하기"
+        goal="曹操가 적벽대전에서 왜 졌는지, 정사(역사책)와 연의(소설)가 같은 이유를 말하는지 확인하기"
         state={state}
         onOpenEvidence={(id) => {
           setSeen((prev) => (prev.includes(id) ? prev : [...prev, id]));
           onOpenEvidence(id);
         }}
+        onComplete={onComplete}
       />
-      {layersSatisfied && counterSatisfied && (
-        <button type="button" onClick={onComplete} className="quest-continue-btn">
-          퀴즈로 이동
-        </button>
-      )}
     </div>
   );
 }

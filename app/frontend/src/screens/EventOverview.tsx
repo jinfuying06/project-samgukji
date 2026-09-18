@@ -67,7 +67,14 @@ export function EventOverview({ eventId, onSelectPerson, onStartQuest }: Props) 
       <div className="event-hero">
         <h1>적벽대전 <span className="event-hero-en">(Battle of Red Cliffs)</span></h1>
         <p className="event-scope-note">
-          이 슬라이스는 적벽대전 一개 사건, <strong>{data.people.length}명</strong> 한정입니다. 더 많은 인물 추가 예정 (D-016).
+          지금은 적벽대전 이야기 속 인물 <strong>{data.people.length}명</strong>만 볼 수 있어요. 나중에 더 많은 사람이 추가될
+          예정이에요.
+        </p>
+        <p className="event-evidence-intro">
+          아래 표의 숫자는 그 사람에 대해 정사(진짜 역사책)나 연의(재미있게 쓴 소설)에 실제로 적힌 문장이 몇 개
+          있는지 세어놓은 거예요. 숫자가 많다고 그 사람이 더 대단한 건 아니에요 — 그 책에 그 사람 이야기가 더
+          많이 적혀 있었다는 뜻일 뿐이에요. "근거 없음"이라고 나오면 그건 "0점"이 아니라, 아직 찾아낸 기록이
+          없다는 뜻이에요.
         </p>
       </div>
       <SourceModeControl options={options} value={mode} onChange={setMode} />

@@ -13,7 +13,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from .db import DB
-from .llm_client import build_llm_client
+from .llm_client import LLMProviderError, build_llm_client
 from .llm_validator import InterpretationValidationError, validate_and_check
 
 SOURCE_LAYERS = {"HISTORY_BASE", "HISTORY_ANNOTATION", "ROMANCE", "LATER_INTERPRETATION", "GAME_DATA"}
@@ -252,16 +252,25 @@ def ask(payload: AskRequest, request: Request):
         client = build_llm_client()
         context = {"evidence": evidence_rows, "now": now, "input_refs": input_refs}
 
-        last_error: InterpretationValidationError | None = None
+        last_error_message = "unknown"
         for attempt in range(2):
-            raw = client.generate(
-                event_id=payload.event_id, question=payload.question, answer_mode=payload.answer_mode, context=context
-            )
+            try:
+                raw = client.generate(
+                    event_id=payload.event_id, question=payload.question, answer_mode=payload.answer_mode, context=context
+                )
+            except LLMProviderError as e:
+                # The provider call itself failed (network/timeout/malformed response) --
+                # treat like a failed attempt, same as a schema-invalid payload, and let
+                # the retry loop's abstain path handle it. Never surface as a raw 500
+                # (agents/backend.md: "예외를 성공 응답으로 감추지 않습니다" -- this IS the
+                # honest response, an explicit insufficient_evidence, not a swallowed error).
+                last_error_message = f"llm_provider_error: {e}"
+                continue
             try:
                 validate_and_check(raw, valid_evidence_ids, valid_metric_ids)
                 return raw
             except InterpretationValidationError as e:
-                last_error = e
+                last_error_message = "; ".join(e.reasons)
                 continue
 
         # Never pass through an unvalidated response, even once, even on retry
@@ -274,7 +283,7 @@ def ask(payload: AskRequest, request: Request):
             "model": {"name": "n/a", "version": "n/a"},
             "prompt_version": "n/a",
             "input_refs": input_refs,
-            "abstention_reason": f"internal validation failure: {'; '.join(last_error.reasons) if last_error else 'unknown'}",
+            "abstention_reason": f"internal validation failure: {last_error_message}",
             "claims": [],
         }
     finally:

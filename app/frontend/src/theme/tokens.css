@@ -11,18 +11,27 @@
   --color-text-soft: #5c5346;
   --color-border: #ddd2ba;
 
-  /* source-layer colors (§3 — always paired with icon + text label, never color alone) */
-  --color-layer-history-base: #33406b; /* 정사 : deep indigo */
-  --color-layer-history-annotation: #7c5a99; /* 정사 주석 : muted violet */
-  --color-layer-romance: #a6702e; /* 연의 : warm bronze/amber */
-  --color-layer-later-interpretation: #5b6472; /* 연구·해석 : neutral slate */
-  --color-layer-game-data: #1f7a72; /* 게임 : distinct teal, reserved for GAME_DATA only */
+  /*
+   * source-layer colors (§3 — always paired with icon + text label, never color alone).
+   * All 5 verified by a real-browser axe scan (tests/e2e/accessibility.spec.ts) not just
+   * against --color-bg-base, but against every badge/chip background these tokens actually
+   * render on (.badge, .coverage-badge, .score-type-badge, .divergence-badge all render
+   * `color-mix(in srgb, var(--token) N%, ...)` self-tinted backgrounds at N=10..20%, which
+   * is a *harder* contrast case than the flat page background -- several of these tokens
+   * originally passed against the flat background but still failed WCAG AA 4.5:1 against
+   * their own generated tint). See handoffs/DECISIONS.md#D-034.
+   */
+  --color-layer-history-base: #33406b; /* 정사 : deep indigo -- already ok at every tint used (min 7.28:1) */
+  --color-layer-history-annotation: #6c4f86; /* 정사 주석 : muted violet (darkened from #7c5a99 -- 4.29:1 on its own 18% badge tint; this is 5.11:1) */
+  --color-layer-romance: #765020; /* 연의 : warm bronze/amber (darkened from #a6702e -- 3.74:1 flat, 4.21:1 on its own 20% badge tint; this is 5.18:1) */
+  --color-layer-later-interpretation: #525a67; /* 연구·해석 : neutral slate (darkened from #5b6472 -- passed flat but only 4.59:1 on its own 18% tint, too thin a margin; this is 5.25:1) */
+  --color-layer-game-data: #19625b; /* 게임 : distinct teal, reserved for GAME_DATA only (darkened from #1f7a72 -- passed flat but 3.86:1 on its own 20% tint; this is 5.16:1) */
 
   /* state colors (§7 — never color-only) */
-  --color-state-insufficient: #8a6d2b;
+  --color-state-insufficient: #634e1f; /* darkened from #8a6d2b -- 4.33:1 flat, 4.38:1 on its own 20% tint; this is 5.71:1 */
   --color-state-stale: #7a5230;
-  --color-state-error: #b0432f;
-  --color-state-success: #3f7a57;
+  --color-state-error: #983a29; /* darkened from #b0432f -- passed flat but 4.31:1 on its own 18% tint; this is 5.23:1 */
+  --color-state-success: #315f44; /* darkened from #3f7a57 -- passed flat but 3.93:1 on its own 18% tint; this is 5.50:1 */
 
   /* spacing scale (4px base) */
   --space-1: 4px;

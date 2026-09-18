@@ -22,6 +22,7 @@ export function AIAnswerPanel({ answerMode, onAsk, result, loading, error, onEvi
 
   return (
     <section className="ai-answer-panel" role="region" aria-label="AI 답변 패널">
+      <h1>AI에게 물어보기</h1>
       <div role="radiogroup" aria-label="답변 모드">
         {MODES.map((m) => (
           <button

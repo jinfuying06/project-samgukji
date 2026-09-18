@@ -14,14 +14,19 @@ interface Props {
   goal: string;
   state: QuestState;
   onOpenEvidence: (id: string) => void;
+  onComplete: () => void;
 }
 
 /**
  * design/component_spec.md `QuestCard` + product/acceptance_criteria.md AC-5:
  * completion is gated on real state, never a single click. "완료" stays present but
- * aria-disabled (not removed from the DOM) until both gates are satisfied.
+ * aria-disabled (not removed from the DOM) until both gates are satisfied. "완료" is
+ * the one and only completion action per the spec -- it must actually call
+ * `onComplete` once enabled, not just stop preventing default (found by real-browser
+ * testing: it previously did nothing when clicked, and a caller had bolted on a
+ * separate, differently-labeled button as the real trigger instead -- see D-035).
  */
-export function QuestCard({ goal, state, onOpenEvidence }: Props) {
+export function QuestCard({ goal, state, onOpenEvidence, onComplete }: Props) {
   const { requiresLayers, requiresCounterEvidence, evidenceSeenIds, counterEvidenceIds, evidenceLayerById } = state;
 
   const seenLayers = useMemo(
@@ -42,7 +47,7 @@ export function QuestCard({ goal, state, onOpenEvidence }: Props) {
 
   return (
     <section className="quest-card" role="region" aria-label={`퀘스트: ${goal}`}>
-      <h3>{goal}</h3>
+      <h2>{goal}</h2>
       <p aria-live="polite" className="quest-progress">
         {evidenceSeenIds.length}/{requiresLayers.length + (requiresCounterEvidence ? 1 : 0)} 근거 확인, 반대 근거{" "}
         {counterEvidenceSatisfied ? "확인됨" : "미확인"}
@@ -53,7 +58,7 @@ export function QuestCard({ goal, state, onOpenEvidence }: Props) {
         </p>
       )}
       <ul className="quest-evidence-list">
-        {counterEvidenceIds.map((id) => (
+        {Object.keys(evidenceLayerById).map((id) => (
           <li key={id}>
             <button type="button" onClick={() => onOpenEvidence(id)}>
               {evidenceSeenIds.includes(id) ? "✓ " : ""}근거 {id}
@@ -64,7 +69,11 @@ export function QuestCard({ goal, state, onOpenEvidence }: Props) {
       </ul>
       <button type="button" aria-disabled={!canComplete} disabled={false} className="quest-complete-btn"
         onClick={(e) => {
-          if (!canComplete) e.preventDefault();
+          if (!canComplete) {
+            e.preventDefault();
+            return;
+          }
+          onComplete();
         }}
       >
         완료
