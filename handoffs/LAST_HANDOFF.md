@@ -1,71 +1,71 @@
 # Handoff
 
-- Task ID: `TASK-DEPTH-FIRST-FOLLOWUP`
-- Stage/track: post-S3, depth-first follow-up (human owner's option 2 choice, 2026-09-19)
-- Boundary: `none` (no stage transition — this is follow-up work inside the already-approved B3 scope)
-- From role: `orchestrator` (backend + frontend + QA/accessibility roles all performed directly in one session, per the human owner's explicit combined request)
+- Task ID: `TASK-S1-GUANDU-DATA-ANALYSIS`
+- Stage/track: S1-equivalent, second event (breadth expansion, not a new S0→S1 lifecycle)
+- Boundary: `none` — data/research-stage work only, no gate opened or requested
+- From role: `orchestrator` (data-engineer + researcher + analyst roles performed directly in one session, per the human owner's direct combined request, same pattern as the prior depth-first session)
 - Status: `DONE`
-- Target commit/run ID: uncommitted working tree at handoff time — commit before starting new work
+- Target commit/run ID: uncommitted working tree at handoff time; A1-equivalent run `run-20260919T014246Z`
 - Timestamp: 2026-09-19
 
 ## Summary
 
-Human owner picked option 2 from `handoffs/PROJECT_STATE.md`'s prior "Next steps" list and asked for it to be carried through to "LLM key 채우기만 하면 되는 상태" (the state where only pasting in a real API key remains). Three parts, all done:
+Human owner said "그러면 대전별로 데이터분석 자료 만들기부터 다시 시작해" (restart from building data-analysis materials, organized per battle) — choosing option 3 ("expand breadth") from `handoffs/PROJECT_STATE.md`'s prior next-steps menu. 관도대전 (Battle of Guandu) was selected as the second event: it's the only other battle named anywhere in the project's founding documents alongside 적벽대전 (`docs/VERTICAL_SLICE_PLAN.md`, `docs/DOMAIN_BLUEPRINT.md`, `data/ingestion_report.md`).
 
-1. **Elementary-level copy** for the remaining learning-game screens (`Quest.tsx`, `Quiz.tsx`, `EventOverview.tsx`), matching `ContributionBreakdown.tsx`'s existing D-030 standard.
-2. **`OpenAILLMClient` fully implemented** (was a stub raising `NotImplementedError`). Real Chat Completions call, prompt built from `analysis/llm_contract.md` + `interpretation.schema.json`; the caller fills in bookkeeping fields, not the model. `.env`/`.env.example` pre-configured — only `OPENAI_API_KEY` remains.
-3. **Real-browser accessibility testing** (`tests/e2e/accessibility.spec.ts`, Playwright + `@axe-core/playwright`) — found and fixed 3 real bugs (D-033/D-034/D-035): a Quest completion gate that could never actually be satisfied by a real user, 6 color tokens failing WCAG AA contrast against their real rendered backgrounds plus 5 screens missing/skipping `<h1>`, and a "완료" button that silently did nothing when clicked. `design/accessibility_checklist.md` rewritten honestly (PASS/PARTIAL per exact coverage; real assistive-tech testing explicitly still `NOT_TESTED`).
+A full S1-equivalent pass was run, mirroring 적벽대전's own D1→R1→A1 method exactly:
+1. **Scope**: a keyword scan (官渡/烏巢/袁紹) across the *entire* raw corpus (all 65 history juan, all 120 romance hui) found the real distribution before committing to a juan/hui range — history hits spread across 17 juan (matching `data/ingestion_report.md`'s original note almost exactly), romance concentrated in a tight 回22–32 arc.
+2. **D1-equivalent**: `data/pipelines/build_guandu_sample.py`, same non-destructive `〈〉`-bracket extraction as `build_chibi_sample.py`. Scoped to HISTORY_BASE juan {01,06,9,10,14,17}, ROMANCE 回{22,25,26,30,31,32}. All 6 sampled juan's brackets balanced.
+3. **R1-equivalent**: `research/coding_manual_guandu.md` + `research/evidence_matrix_guandu.csv`, 25 real coded evidence spans across 9 persons (3 sharing `person_id`s with the 적벽대전 cast on purpose — 曹操/郭嘉/關羽). Reused 7 existing coding labels; added exactly 3 new ones (`rival_character_assessment`, `strategic_defection`, `punished_for_correct_dissent`) where 관도대전's actual narrative mechanism (repeated defections, an advisor executed for having been proven right) had no real analogue in 적벽대전's label set. `checksum_sha256_12` computed programmatically for every row, not hand-typed.
+4. **A1-equivalent**: `analysis/pipelines/compute_guandu_result.py` → `analysis/outputs/guandu_result.json`, schema-validated, 4 pre-registered cross-layer divergence cases.
 
-Full detail: `handoffs/DECISIONS.md` D-033–D-035, `handoffs/PROJECT_STATE.md`'s "Completed" section.
+Full detail: `handoffs/phase_reports/S1_GUANDU_COMPLETION.md`, `handoffs/DECISIONS.md#D-036`.
+
+**Explicitly not done:** no second/double-coding pass (this event's evidence is one full validation tier behind 적벽대전's); most of the extracted 205-paragraph candidate pool remains uncoded (25 coded); no app/backend/frontend change — `event.chibi` is still the only event the running app serves.
 
 ## Changed paths
 
-- `app/frontend/src/screens/{Quest,Quiz,EventOverview,PersonComparison,ScoreBreakdown}.tsx`, `app/frontend/src/components/{QuestCard,AIAnswerPanel,ContributionBreakdown}.tsx`
-- `app/frontend/src/theme/tokens.css` (6 color tokens darkened for WCAG AA)
-- `app/frontend/tests/components/QuestCard.test.tsx` (regression tests for D-033/D-035)
-- `app/frontend/tests/e2e/accessibility.spec.ts`, `app/frontend/playwright.config.ts` (new)
-- `app/frontend/package.json`/`.gitignore`, `app/frontend/vite.config.ts` (vitest excludes `tests/e2e/**`)
-- `app/backend/api/llm_client.py` (real `OpenAILLMClient`), `app/backend/api/main.py` (`LLMProviderError` handling), `app/backend/requirements.txt` (`requests`), `app/backend/README.md` (run + LLM-key docs)
-- `tests/backend/test_llm_client.py` (new, 13 tests, all mock `requests.post`)
-- `.env`, `.env.example` (LLM provider/model pre-set)
-- `design/accessibility_checklist.md`, `handoffs/{DECISIONS,PROJECT_STATE,CURRENT_TASK}.md`
+- `data/pipelines/build_guandu_sample.py` (new)
+- `research/coding_manual_guandu.md`, `research/evidence_matrix_guandu.csv` (new)
+- `analysis/pipelines/compute_guandu_result.py` (new)
+- `analysis/outputs/guandu_result.json`, `analysis/outputs/guandu_run_manifest.json` (new, committed — `.gitignore` given 2 new narrow exceptions matching D-015's precedent, content-safety-checked: aggregate counts + evidence_id references only)
+- `handoffs/{DECISIONS,PROJECT_STATE,CURRENT_TASK}.md`, `handoffs/phase_reports/S1_GUANDU_COMPLETION.md` (new)
 
 ## Validation run
 
 | Command/check | Result | Evidence path |
 | --- | --- | --- |
-| `python -m pytest tests/ -q` | PASS (59/59) | terminal |
-| `npm test` (frontend, vitest) | PASS (49/49) | terminal |
-| `npx playwright test` (`npm run test:e2e`) | PASS (8/8), after fixing D-033/D-034/D-035 | terminal, `test-results/` traces |
-| `npx tsc -b` | PASS (clean) | terminal |
+| `python data/pipelines/build_guandu_sample.py` | PASS — 866 candidates, 0 duplicate hashes, 6/6 juan brackets balanced | terminal, `guandu_run_manifest.json` (private) |
+| `python analysis/pipelines/compute_guandu_result.py` | PASS — 45 metrics, 16 edges, deterministic | terminal |
+| `guandu_result.json` vs `result.schema.json` | PASS (`jsonschema` validation) | terminal |
 | `python scripts/validate_structure.py` | PASS (38 files) | terminal |
 | `python scripts/check_data_boundaries.py` | PASS | terminal |
+| `python -m pytest tests/ -q` | PASS (59/59, unaffected — this track touched no backend code) | terminal |
+| `git status --short` | PASS — no private/raw/runtime paths tracked | terminal |
 
 ## Validation not run
 
-- Real assistive-technology testing (an actual human with a screen reader) — cannot be done by an agent; remains the biggest open accessibility gap, disclosed in `design/accessibility_checklist.md`.
-- `OpenAILLMClient` was never exercised against the real OpenAI API (no key available in this environment; agents/backend.md also prohibits paid API calls in tests) — only `requests.post`-mocked tests ran. First real call is whoever pastes in `OPENAI_API_KEY`.
-- Dark-mode color-contrast was checked only by manual WCAG-formula calculation, not a real dark-mode browser scan.
-- Actual 200% browser zoom (distinct from the 360px narrow-viewport test that was run).
+- No second independent coder (LLM-LLM or human) has coded any of these 25 rows — see "Explicitly not done" above and the coding manual's own "Inter-coder reliability" section.
+- The 4 divergence-case classifications are this single coder's own qualitative judgment, not cross-checked.
+- No rights/legal re-review specific to this event (relies on the same owner-confirmed basis as 적벽대전, D-012, since it's the same two source works — not re-asked explicitly this time).
 
 ## Assumptions and risks
 
-- The `--color-layer-*`/`--color-state-*` token darkening in `tokens.css` is a visual change (deeper shades of the same hues) — nothing marked `PASS` by a human designer before, so no prior sign-off is being overridden, but a human should glance at it before treating the palette as final.
-- `QuestCard`'s "완료" button now actually does something (D-035) — any other code that assumed the separate "퀴즈로 이동" button was the real trigger would need updating; grepped for other usages, found none, but flagging in case something outside this checklist's view depended on it.
+- Person-id reuse (`person.cao_cao`/`person.guo_jia`/`person.guan_yu` shared across both events) assumes the human owner wants the same real person tracked as one identity across battles, not per-event-forked identities. This seemed the obviously correct call (they're the same historical person) but was not explicitly asked.
+- The 3 new coding labels are a judgment call about what's "genuinely new" vs. reusable — a different coder might have forced these into existing labels instead, or split them differently. Flagged, not hidden, in the coding manual's own header.
 
 ## Blockers / open decisions
 
-- None. Next step is the human owner's choice among `handoffs/PROJECT_STATE.md`'s "Next steps" options — same open menu as before, now including "actually try the real LLM key" and "get a human to do real screen-reader testing."
+- None technical. Next step is the human owner's choice among `handoffs/PROJECT_STATE.md`'s "Next steps" options (now including 관도대전-specific ones: code more of its pool, double-code it, or start deciding multi-event app architecture).
 
 ## Recommended next role
 
 - Role: `human project owner`, then whichever role the chosen direction implies
-- Objective: pick a direction from `handoffs/PROJECT_STATE.md`'s "Next steps"; if it's "try the real LLM key," that's a 1-line `.env` edit, not a new task
-- Required inputs: none beyond the decision itself
+- Objective: pick a direction from `handoffs/PROJECT_STATE.md`'s "Next steps"
+- Required inputs: `handoffs/phase_reports/S1_GUANDU_COMPLETION.md`, `research/coding_manual_guandu.md`, `analysis/outputs/guandu_result.json`
 
 ## Stage-transition status
 
-- Boundary reached: `no` (not a stage boundary — internal follow-up work within B3's already-approved scope)
-- Completion report: N/A (not a stage-completion report; see `handoffs/PROJECT_STATE.md` instead)
-- Human approval required: `no` (matches D-029's stance — the human owner does not need to gate follow-up work like this)
+- Boundary reached: `no` — not a stage boundary, data/research-stage follow-up work
+- Completion report: `handoffs/phase_reports/S1_GUANDU_COMPLETION.md`
+- Human approval required: `no` (matches D-029's stance — same as the prior depth-first pass)
 - Approval recorded: N/A

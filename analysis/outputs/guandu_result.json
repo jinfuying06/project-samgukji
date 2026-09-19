@@ -1,0 +1,671 @@
+{
+  "analysis_id": "A1-guandu-vertical-slice-v1",
+  "run_id": "run-20260919T014246Z",
+  "status": "partial",
+  "population": {
+    "n": 25,
+    "description": "25 coded evidence spans (research/evidence_matrix_guandu.csv) covering 9 named persons (曹操/關羽/郭嘉/沮授/田豐/荀彧/許攸/袁紹/張郃) in the 관도대전 (Battle of Guandu) vertical slice, across HISTORY_BASE, HISTORY_ANNOTATION, and ROMANCE. Cast size is derived from the CSV at run time, not fixed."
+  },
+  "metrics": [
+    {
+      "metric_id": "coverage.PERSON-CAOCAO.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 曹操 (HISTORY_BASE)",
+      "value": 3,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-CAOCAO and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-CAOCAO.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 曹操 (HISTORY_ANNOTATION)",
+      "value": 3,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-CAOCAO and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-CAOCAO.ROMANCE",
+      "name": "Evidence-span coverage count: 曹操 (ROMANCE)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-CAOCAO and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUANYU.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 關羽 (HISTORY_BASE)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUANYU and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUANYU.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 關羽 (HISTORY_ANNOTATION)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUANYU and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUANYU.ROMANCE",
+      "name": "Evidence-span coverage count: 關羽 (ROMANCE)",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUANYU and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUOJIA.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 郭嘉 (HISTORY_BASE)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUOJIA and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUOJIA.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 郭嘉 (HISTORY_ANNOTATION)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUOJIA and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-GUOJIA.ROMANCE",
+      "name": "Evidence-span coverage count: 郭嘉 (ROMANCE)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-GUOJIA and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-JUSHOU.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 沮授 (HISTORY_BASE)",
+      "value": 4,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-JUSHOU and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-JUSHOU.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 沮授 (HISTORY_ANNOTATION)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-JUSHOU and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-JUSHOU.ROMANCE",
+      "name": "Evidence-span coverage count: 沮授 (ROMANCE)",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-JUSHOU and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-TIANFENG.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 田豐 (HISTORY_BASE)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-TIANFENG and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-TIANFENG.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 田豐 (HISTORY_ANNOTATION)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-TIANFENG and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-TIANFENG.ROMANCE",
+      "name": "Evidence-span coverage count: 田豐 (ROMANCE)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-TIANFENG and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUNYU.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 荀彧 (HISTORY_BASE)",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUNYU and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUNYU.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 荀彧 (HISTORY_ANNOTATION)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUNYU and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUNYU.ROMANCE",
+      "name": "Evidence-span coverage count: 荀彧 (ROMANCE)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUNYU and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUYOU.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 許攸 (HISTORY_BASE)",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUYOU and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUYOU.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 許攸 (HISTORY_ANNOTATION)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUYOU and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-XUYOU.ROMANCE",
+      "name": "Evidence-span coverage count: 許攸 (ROMANCE)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-XUYOU and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-YUANSHAO.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 袁紹 (HISTORY_BASE)",
+      "value": 9,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-YUANSHAO and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-YUANSHAO.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 袁紹 (HISTORY_ANNOTATION)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-YUANSHAO and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-YUANSHAO.ROMANCE",
+      "name": "Evidence-span coverage count: 袁紹 (ROMANCE)",
+      "value": 4,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-YUANSHAO and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-ZHANGHE.HISTORY_BASE",
+      "name": "Evidence-span coverage count: 張郃 (HISTORY_BASE)",
+      "value": 3,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-ZHANGHE and source_layer == HISTORY_BASE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-ZHANGHE.HISTORY_ANNOTATION",
+      "name": "Evidence-span coverage count: 張郃 (HISTORY_ANNOTATION)",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-ZHANGHE and source_layer == HISTORY_ANNOTATION. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "coverage.PERSON-ZHANGHE.ROMANCE",
+      "name": "Evidence-span coverage count: 張郃 (ROMANCE)",
+      "value": 0,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows whose person_refs includes PERSON-ZHANGHE and source_layer == ROMANCE. Coverage/emphasis fact only, not a capability or ability score, and not comparable across persons as a ranking."
+    },
+    {
+      "metric_id": "label_frequency.combat_skill_display",
+      "name": "Coding-label frequency: combat_skill_display",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.decisive_leadership_under_dissent",
+      "name": "Coding-label frequency: decisive_leadership_under_dissent",
+      "value": 5,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.joint_military_command",
+      "name": "Coding-label frequency: joint_military_command",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.loyalty_override_duty",
+      "name": "Coding-label frequency: loyalty_override_duty",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.punished_for_correct_dissent",
+      "name": "Coding-label frequency: punished_for_correct_dissent",
+      "value": 2,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.rival_character_assessment",
+      "name": "Coding-label frequency: rival_character_assessment",
+      "value": 5,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.source_conflict_note",
+      "name": "Coding-label frequency: source_conflict_note",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.strategic_defection",
+      "name": "Coding-label frequency: strategic_defection",
+      "value": 4,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.strategic_self_awareness",
+      "name": "Coding-label frequency: strategic_self_awareness",
+      "value": 1,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "label_frequency.subordinate_initiated_strategy",
+      "name": "Coding-label frequency: subordinate_initiated_strategy",
+      "value": 3,
+      "unit": "evidence_span_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of research/evidence_matrix_guandu.csv rows with this coding_label. Exploratory descriptive count only (N=25 total); not adjusted for text length or narrative opportunity -- a label tally, not a trait score."
+    },
+    {
+      "metric_id": "network_edge_count.HISTORY_BASE",
+      "name": "Person-to-person network edges (HISTORY_BASE)",
+      "value": 11,
+      "unit": "edge_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of evidence_matrix_guandu.csv rows with both a real (non-commentator, non-annotator) primary_actor and subject_of_claim, grouped by source_layer. Layers are never merged into one graph."
+    },
+    {
+      "metric_id": "network_edge_count.HISTORY_ANNOTATION",
+      "name": "Person-to-person network edges (HISTORY_ANNOTATION)",
+      "value": 1,
+      "unit": "edge_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of evidence_matrix_guandu.csv rows with both a real (non-commentator, non-annotator) primary_actor and subject_of_claim, grouped by source_layer. Layers are never merged into one graph."
+    },
+    {
+      "metric_id": "network_edge_count.ROMANCE",
+      "name": "Person-to-person network edges (ROMANCE)",
+      "value": 4,
+      "unit": "edge_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Count of evidence_matrix_guandu.csv rows with both a real (non-commentator, non-annotator) primary_actor and subject_of_claim, grouped by source_layer. Layers are never merged into one graph."
+    },
+    {
+      "metric_id": "network_edge_count.total",
+      "name": "Person-to-person network edges (all layers, unmerged list)",
+      "value": 16,
+      "unit": "edge_count",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "Sum of the three per-layer edge counts above. Layers are never merged into one graph."
+    },
+    {
+      "metric_id": "divergence.zhanghe_defection_cause",
+      "name": "Divergence: why 張郃 defected to 曹操",
+      "value": null,
+      "unit": "categorical_classification",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "classification=contradictory; evidence_ids=HB-J01-P5,HA-J17-P1; rationale: HB-J01-P5 (武帝紀): frames 張郃's defection as opportunistic, immediately after hearing the Wuchao raid succeeded. HA-J17-P1 (裴松之 annotation on 張郃's own biography) explicitly names this as a discrepancy: 張郃's own biography instead attributes the defection to fear of 郭圖's false accusation after the defeat, not to the Wuchao news itself. This is the one case in this event's coding where an annotation itself flags the conflict (coded coding_label=source_conflict_note at HA-J17-P1), unlike 許攸's defection (HB-J01-P4 vs HB-J10-P2), where two HISTORY_BASE passages disagree with no annotation flagging it -- see the coding manual's ambiguity-handling note for why that pair was not registered as a divergence case here."
+    },
+    {
+      "metric_id": "divergence.guanyu_yanliang_credit",
+      "name": "Divergence: who is credited with killing 顏良",
+      "value": null,
+      "unit": "categorical_classification",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "classification=contradictory; evidence_ids=HB-J01-P2,RM-C025-P1; rationale: HB-J01-P2 (武帝紀): credits 張遼 and 關羽 jointly ('使張遼、關羽前登，擊破，斬良'), in one plain sentence with no combat detail. RM-C025-P1 (ROMANCE): a full combat set-piece crediting 關羽 alone, with 張遼 present only as an onlooker who explicitly warns him not to make an idle boast. Same underlying event (顏良's death at the 白馬 relief), different credit attribution and dramatically different narrative weight."
+    },
+    {
+      "metric_id": "divergence.jushou_imprisonment",
+      "name": "Divergence: whether 沮授 was imprisoned before the battle",
+      "value": null,
+      "unit": "categorical_classification",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "classification=contradictory; evidence_ids=HB-J06-P4,RM-C030-P2; rationale: HB-J06-P4 (袁紹傳): 沮授 loses part of his command (reassigned to 郭圖) before the battle, but is not imprisoned -- he is only captured later, during the retreat across the river, and killed afterward for trying to return to 袁紹's side. RM-C030-P2 (ROMANCE): 袁紹 explicitly has 沮授 '鎖禁軍中' (locked in custody within the army) alongside 田豐, before the battle even starts. ROMANCE escalates a real documented event (loss of command) into a stronger, undocumented claim (imprisonment) -- a genuine contradiction, not merely a coverage gap."
+    },
+    {
+      "metric_id": "divergence.xunyu_character_assessment",
+      "name": "Divergence: 荀彧's character assessment of 袁紹's staff",
+      "value": null,
+      "unit": "categorical_classification",
+      "interval_low": null,
+      "interval_high": null,
+      "method": "classification=compatible; evidence_ids=HB-J10-P1,RM-C022-P1; rationale: HB-J10-P1 (荀彧傳, a memorial to 曹操) and RM-C022-P1 (ROMANCE, staged as dialogue with 孔融) give essentially the same character assessment of each named advisor on 袁紹's side (田豐/許攸/審配/逢紀/顏良/文醜), down to nearly identical phrasing for several of them. ROMANCE changes the delivery context (a conversation rather than a private memorial) but not the assessment's content -- classified compatible, the strongest same-claim agreement case in this event's coded rows, unlike the mostly contradictory cases above."
+    }
+  ],
+  "edges": [
+    {
+      "source": "person.cao_cao",
+      "source_name_zh": "曹操",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "rival_character_assessment",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J01-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "person.xun_yu",
+      "source_name_zh": "荀彧",
+      "target": "person.cao_cao",
+      "target_name_zh": "曹操",
+      "relation": "subordinate_initiated_strategy",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J01-P3",
+      "confidence": "high"
+    },
+    {
+      "source": "person.ju_shou",
+      "source_name_zh": "沮授",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "subordinate_initiated_strategy",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J06-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "person.ju_shou",
+      "source_name_zh": "沮授",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "decisive_leadership_under_dissent",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J06-P2",
+      "confidence": "high"
+    },
+    {
+      "source": "person.ju_shou",
+      "source_name_zh": "沮授",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "decisive_leadership_under_dissent",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J06-P3",
+      "confidence": "high"
+    },
+    {
+      "source": "person.yuan_shao",
+      "source_name_zh": "袁紹",
+      "target": "person.tian_feng",
+      "target_name_zh": "田豐",
+      "relation": "punished_for_correct_dissent",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J06-P5",
+      "confidence": "high"
+    },
+    {
+      "source": "person.xun_yu",
+      "source_name_zh": "荀彧",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "rival_character_assessment",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J10-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "審配",
+      "source_name_zh": "審配",
+      "target": "person.xu_you",
+      "target_name_zh": "許攸",
+      "relation": "strategic_defection",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J10-P2",
+      "confidence": "high"
+    },
+    {
+      "source": "person.guo_jia",
+      "source_name_zh": "郭嘉",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "rival_character_assessment",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J14-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "person.zhang_he",
+      "source_name_zh": "張郃",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "decisive_leadership_under_dissent",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J17-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "郭圖",
+      "source_name_zh": "郭圖",
+      "target": "person.zhang_he",
+      "target_name_zh": "張郃",
+      "relation": "strategic_defection",
+      "source_layer": "HISTORY_BASE",
+      "evidence_id": "HB-J17-P2",
+      "confidence": "high"
+    },
+    {
+      "source": "person.cao_cao",
+      "source_name_zh": "曹操",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "rival_character_assessment",
+      "source_layer": "HISTORY_ANNOTATION",
+      "evidence_id": "HA-J06-P2",
+      "confidence": "medium"
+    },
+    {
+      "source": "person.ju_shou",
+      "source_name_zh": "沮授",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "decisive_leadership_under_dissent",
+      "source_layer": "ROMANCE",
+      "evidence_id": "RM-C026-P2",
+      "confidence": "high"
+    },
+    {
+      "source": "person.tian_feng",
+      "source_name_zh": "田豐",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "decisive_leadership_under_dissent",
+      "source_layer": "ROMANCE",
+      "evidence_id": "RM-C030-P1",
+      "confidence": "high"
+    },
+    {
+      "source": "person.yuan_shao",
+      "source_name_zh": "袁紹",
+      "target": "person.ju_shou",
+      "target_name_zh": "沮授",
+      "relation": "punished_for_correct_dissent",
+      "source_layer": "ROMANCE",
+      "evidence_id": "RM-C030-P2",
+      "confidence": "high"
+    },
+    {
+      "source": "person.xun_yu",
+      "source_name_zh": "荀彧",
+      "target": "person.yuan_shao",
+      "target_name_zh": "袁紹",
+      "relation": "rival_character_assessment",
+      "source_layer": "ROMANCE",
+      "evidence_id": "RM-C022-P1",
+      "confidence": "high"
+    }
+  ],
+  "network_summary": {
+    "by_layer": {
+      "HISTORY_BASE": {
+        "unique_node_count": 10,
+        "edge_count": 11,
+        "density": 0.12222222222222222,
+        "density_caution": "edges / (nodes * (nodes-1)) for the HISTORY_BASE graph only (nodes=10, edges=11). At this N, density reflects which evidence rows happened to name both an actor and a subject, not real social closeness or narrative centrality -- do not present as a sociability or importance score. null when fewer than 2 nodes.",
+        "unique_node_count_note": "Distinct canonical person_ids appearing as source or target of a HISTORY_BASE edge -- smaller than the full 9-person cast in most layers, since most evidence rows have no subject_of_claim. A person absent here may still have real coverage.* evidence in this layer, just not in actor-subject form."
+      },
+      "HISTORY_ANNOTATION": {
+        "unique_node_count": 2,
+        "edge_count": 1,
+        "density": 0.5,
+        "density_caution": "edges / (nodes * (nodes-1)) for the HISTORY_ANNOTATION graph only (nodes=2, edges=1). At this N, density reflects which evidence rows happened to name both an actor and a subject, not real social closeness or narrative centrality -- do not present as a sociability or importance score. null when fewer than 2 nodes.",
+        "unique_node_count_note": "Distinct canonical person_ids appearing as source or target of a HISTORY_ANNOTATION edge -- smaller than the full 9-person cast in most layers, since most evidence rows have no subject_of_claim. A person absent here may still have real coverage.* evidence in this layer, just not in actor-subject form."
+      },
+      "ROMANCE": {
+        "unique_node_count": 4,
+        "edge_count": 4,
+        "density": 0.3333333333333333,
+        "density_caution": "edges / (nodes * (nodes-1)) for the ROMANCE graph only (nodes=4, edges=4). At this N, density reflects which evidence rows happened to name both an actor and a subject, not real social closeness or narrative centrality -- do not present as a sociability or importance score. null when fewer than 2 nodes.",
+        "unique_node_count_note": "Distinct canonical person_ids appearing as source or target of a ROMANCE edge -- smaller than the full 9-person cast in most layers, since most evidence rows have no subject_of_claim. A person absent here may still have real coverage.* evidence in this layer, just not in actor-subject form."
+      }
+    },
+    "cross_layer_shared_pair_count": 4,
+    "cross_layer_shared_pairs": [
+      {
+        "person_a": "person.cao_cao",
+        "person_b": "person.yuan_shao",
+        "relations_by_layer": {
+          "HISTORY_BASE": [
+            "rival_character_assessment"
+          ],
+          "HISTORY_ANNOTATION": [
+            "rival_character_assessment"
+          ]
+        }
+      },
+      {
+        "person_a": "person.ju_shou",
+        "person_b": "person.yuan_shao",
+        "relations_by_layer": {
+          "HISTORY_BASE": [
+            "subordinate_initiated_strategy",
+            "decisive_leadership_under_dissent",
+            "decisive_leadership_under_dissent"
+          ],
+          "ROMANCE": [
+            "decisive_leadership_under_dissent",
+            "punished_for_correct_dissent"
+          ]
+        }
+      },
+      {
+        "person_a": "person.tian_feng",
+        "person_b": "person.yuan_shao",
+        "relations_by_layer": {
+          "HISTORY_BASE": [
+            "punished_for_correct_dissent"
+          ],
+          "ROMANCE": [
+            "decisive_leadership_under_dissent"
+          ]
+        }
+      },
+      {
+        "person_a": "person.xun_yu",
+        "person_b": "person.yuan_shao",
+        "relations_by_layer": {
+          "HISTORY_BASE": [
+            "rival_character_assessment"
+          ],
+          "ROMANCE": [
+            "rival_character_assessment"
+          ]
+        }
+      }
+    ],
+    "cross_layer_note": "Count/list of unordered (person_a, person_b) pairs with at least one edge in 2+ of {HISTORY_BASE, HISTORY_ANNOTATION, ROMANCE}. Same-pair-different-layer relation labels are a real comparison point, not a centrality or importance measure. An empty list means no pair currently shares an edge across layers in this slice -- itself informative, not an error."
+  },
+  "limitations": [
+    "N=25 evidence spans total across 9 persons and 3 source layers — far too small for any inferential statistic; all metrics here are descriptive counts or single-case qualitative classifications, not estimates with sampling uncertainty.",
+    "This is a first-pass coding scoped to HISTORY_BASE juan {01,06,10,14,17} and ROMANCE 回{22,25,26,30}, out of a larger extracted candidate pool (866 paragraphs, 205 keyword-matched) covering juan {01,06,9,10,14,17} and 回{22,25,26,30,31,32} -- see research/coding_manual_guandu.md's Scope section for exactly what remains uncoded.",
+    "This entire evidence set was coded by a single pass (R1-equivalent, no independent second coder yet) -- unlike 적벽대전, there is no LLM-LLM double-coding check and no human review for this event yet. Treat every coding_label assignment here as provisional until a second, independent pass is run.",
+    "3 of 9 scored persons (曹操/郭嘉/關羽) are shared person_ids with the 적벽대전 cast; their coverage.* counts here reflect ONLY this event's evidence, not a combined cross-battle total.",
+    "HISTORY_ANNOTATION coverage (4 of 25 rows) is proportionally thinner than 적벽대전's -- see the coding manual's Coverage note for why.",
+    "coding_label frequency counts are not adjusted for each person's total narrative length or number of narrative opportunities in the source texts; they must not be read as ability or trustworthiness scores."
+  ],
+  "warnings": [
+    "Do not compute or display a composite/weighted score or a 'strongest leader' ranking from this result -- no approved default weights exist for this event either, and N is too small regardless.",
+    "coverage.* metrics with value=0 mean 'no coded evidence span in this layer for this person in this slice', not 'score of zero'.",
+    "network_edge_count.* covers only rows with a real named primary_actor AND subject_of_claim; most rows are excluded from the graph, so these are not full interaction counts."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "run_id": "run-20260919T014246Z",
+  "script": "analysis/pipelines/compute_guandu_result.py",
+  "script_version": "1.0.0",
+  "executed_at": "2026-09-19T01:42:46.675157+00:00",
+  "input_files": [
+    {
+      "path": "research/evidence_matrix_guandu.csv",
+      "sha256": "e67cd0cb8d1f1827cd250d2c0303adf496269ebbb384a010959922be9fdda681",
+      "row_count": 25
+    }
+  ],
+  "output_files": [
+    {
+      "path": "analysis/outputs/guandu_result.json",
+      "sha256": "19a5e59f65b0894dd01ae5ded26a8cd0ecdade3ee310cc855a93a2d976238956"
+    }
+  ],
+  "reproduce_command": "python analysis/pipelines/compute_guandu_result.py",
+  "notes": "Deterministic aggregation script: re-running against an unchanged research/evidence_matrix_guandu.csv reproduces identical metrics (run_id and executed_at will differ by design)."
+}
